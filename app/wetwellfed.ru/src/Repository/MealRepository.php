@@ -157,33 +157,16 @@ class MealRepository extends ServiceEntityRepository
 
     public function getYearTrack(Eater $eater)
     {
-        // число-индекс, текущего дня недели(пн 0, вт 1, ср 2, и т.д.)
-//        $weekRU = [
-//            0 => 6, //Вс
-//            1 => 0, //Пн
-//            2 => 1, //Вт
-//            3 => 2, //Ср
-//            4 => 3, //Чт
-//            5 => 4, //Пт
-//            6 => 5, //Сб
-//        ];
-
         $n = date("w", time());
-//        $n = 1;
         if ($n == 0)
             $n = 7;
         $n -= 1; // это мы делаем, потому что индексы сместились и теперь пн был = 1
-
-        // число-индекс, лобого дня недели(какой индекс был у 8 / 30 / 60 дней назад)
-//        $x = 13; //
-//        echo (($n - ($x % 7)) + 7) % 7;
 
         // общее кол-во дней, которые ты исопльзуешь для построения таблички). т.е. если сегодня понедельник, то 365 + 1
         $needWeek = 52;
         $allDays = $needWeek * 7 + $n;
 
         $before = new \DateTime("-$allDays days");
-//        echo $before->format("Y-m-d");
 
         $timeline = [
             [], [], [], [], [], [], [],
@@ -219,17 +202,12 @@ class MealRepository extends ServiceEntityRepository
             ->getResult() // GIVES EMPTY ARRAY!??
         ;
 
-//        var_dump($result);
-//        die();
-
         foreach ($result as $row)
         {
             $date = $row["eatenAt"]->format('Y-m-d');
             $kcal = $row["calories"];
-//            $percentage = $kcal / $eater->getKcalDayNorm() * 100;
 
             $day = $row["eatenAt"]->format('w');
-//            $d = $row["eatenAt"]->format('l');
             if ($day == 0)
                 $day = 7;
             $day -= 1; // это мы делаем, потому что индексы сместились и теперь пн был = 1
@@ -257,41 +235,7 @@ class MealRepository extends ServiceEntityRepository
                 }
                 $timeline[$day][$date]['lvl'] = $lvl;
             }
-//            echo "$date == $day == $d <br>";
-
-//            echo $eater->getKcalDayNorm();
-//            echo " $kcal ";
-//            echo "=> $percentage% ";
-//            echo "=> $lvl ";
-//            echo "<br>";
         }
-
-//        echo "<pre>";
-//        var_dump($timeline);
-//        echo "$percentage% ";
-//        echo $eater->getKcalDayNorm();
-//        echo "</pre>";
-//        die();
-
-//       TODO: what we need to get:
-//        array[
-//            0 => [
-//                'date' => "2023-03-18",
-//                'kcal' => 800,
-//                'lvl' => 3,
-//            ],
-//            1 => [
-//                'date' => "2023-03-17",
-//                'kcal' => 0,
-//                'lvl' => 1,
-//            ],
-//            2 => [
-//                'date' => "2023-03-16",
-//                'kcal' => 500,
-//                'lvl' => 3,
-//            ],
-//        ]
-
 
         return $timeline;
     }
