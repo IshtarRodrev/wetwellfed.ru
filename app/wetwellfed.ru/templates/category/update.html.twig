@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit item{% endblock %}
+
+{% block body %}
+    <h2>Let's edit your "{{ category.name }}" category!</h2>
+
+    {% include 'category/form.html.twig' %}
+
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bon appetit!{% endblock %}
+
+{% block body %}
+    <table>
+        {% for weekday in timeline %}
+            <tbody>
+                <tr align="center">
+                    <td>day{{ loop.index }}</td>
+                    {% for day in weekday %}
+                        <label >
+                            <td class="lvl{{ day.lvl }} daily_kcal">
+                                <a>
+{#                                    {{ day.date }} / #}
+                                    {{ day.kcal }}/{{ day.lvl }}
+                                </a>
+                            </td>
+                        </label>
+                    {% endfor %}
+                </tr>
+            </tbody>
+        {% endfor %}
+        <thead>
+            <tr>
+                {% set break = false %}
+                {% for weekday in timeline %}
+
+                    {% if break == false %}
+                        <th scope="col">week #</th>
+                        {% for day in weekday %}
+                            <th scope="col">week {{ loop.index }}</th>
+                        {% endfor %}
+                        {% set break = true %}
+                    {% endif %}
+
+                {% endfor %}
+            </tr>
+        </thead>
+    </table>
+{% endblock %}

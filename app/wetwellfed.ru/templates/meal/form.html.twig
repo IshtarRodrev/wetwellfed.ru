@@ -1,0 +1,14 @@
+
+{{ form_start(mealForm) }}
+    {{ form_row(mealForm.food,{
+        label: 'Title'
+    }) }}
+    {{ form_row(mealForm.amount, {
+        label: 'Amount'
+    }) }}
+    {{ form_row(mealForm.eatenAt, {
+        label: 'Date/time'
+    }) }}
+
+<button type="submit" class="btn">Yum!</button>
+{{ form_end(mealForm) }}

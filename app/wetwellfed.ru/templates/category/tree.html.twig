@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Food list{% endblock %}
+
+{% block body %}
+    <h2> {category map} </h2>
+
+    <ul class="main-menu">
+        {% include "category/brunch.html.twig" with {'categories':roots} only %}
+    </ul>
+
+    <span>
+        <br><br>
+        Can't find the proper item? Contribute our project by
+        <a href="{{ url('add_food') }}">adding more food</a>
+        to the menu!
+    </span>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bon appetit!{% endblock %}
+
+{% block body %}
+    {{ todayScore }}/{{ maxScore }}kcal
+    <h2>
+        What have you ate today,
+        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+            <a class="nav-link" href="{{ path('app_login') }}"
+        >{{ app.user.name }}</a>{% endif %}?
+    </h2>
+
+    {% include 'home/form.html.twig' %}
+
+{% endblock %}

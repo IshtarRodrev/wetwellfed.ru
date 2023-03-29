@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bon appetit!{% endblock %}
+
+{% block body %}
+{#    {{ todayScore }}/{{ maxScore }}kcal#}
+    <table class="table books-table table-hover table-bordered" id="books-list" rules="rows" cellpadding="5%" width="80%">
+
+    <tbody>
+            {% for day in timeline %}
+    {#                {{ value }}#}
+                <tr align="center">
+                    <td>{{ loop.index }}</td>
+                    <td>{{ day.date }}</td>
+                    <td>{{ day.kcal }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">date</th>
+                <th scope="col">Consumed</th>
+            </tr>
+        </thead>
+    </table>
+{% endblock %}

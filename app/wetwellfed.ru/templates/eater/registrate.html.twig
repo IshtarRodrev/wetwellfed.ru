@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Registration{% endblock %}
+
+{% block body %}
+    <h1>Sign in to keep track of your nutrition!</h1>
+
+    {{ form_start(registrationType) }}
+        {{ form_row(registrationType.name) }}
+        {{ form_row(registrationType.sex) }}
+        {{ form_row(registrationType.birthdate) }}
+        {{ form_row(registrationType.weight, {
+            label: 'Your weight (kg)'
+        }) }}
+        {{ form_row(registrationType.height, {
+            label: 'Your height (cm)'
+        }) }}
+        {{ form_row(registrationType.email) }}
+        {{ form_row(registrationType.password, {
+            label: 'Set password'
+        }) }}
+{#        {{ form_row(registrationType.agreeTerms) }}#}
+
+        <button type="submit" class="btn">Register</button>
+    {{ form_end(registrationType) }}
+{% endblock %}

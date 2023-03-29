@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+        {% block stylesheets %}
+            <style type="text/css">
+                header{
+                    background-color: linen;
+                    padding-left:  25px;
+                    padding-right: 25px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+
+                    /*background-image:*/
+                    /*        linear-gradient(45deg, #f1abab 25%, transparent 25%,*/
+                    /*        transparent 75%, lightcoral 75%, lightcoral),*/
+                    /*        linear-gradient(45deg, lightcoral 25%, transparent 25%,*/
+                    /*        transparent 75%, lightcoral 75%, lightcoral);*/
+                    /*background-size: 60px 60px;*/
+                    /*background-position: 0 0, 30px 30px;*/
+                }
+                .starter-template {
+                    /*text-align: left;*/
+                }
+                .section.actions .btn {
+                    display: block;
+                    width: 100%;
+                }
+                body{
+                    margin: 0;
+                    background-image:
+                            /*linear-gradient(45deg, #f1abab 25%, transparent 25%,*/
+                            /*transparent 75%, #f1abab 75%, #f1abab),*/
+                            /*linear-gradient(45deg, #f1abab 25%, transparent 25%,*/
+                            /*transparent 75%, #f1abab 75%, #f1abab);*/
+                    background-size: 60px 60px;
+                    background-position: 0 0, 30px 30px;
+                    /*$s: 60px;*/
+                    /*background:*/
+                    /*        repeating-conic-gradient(#000 0% 25%, #eee 0% 50%)*/
+                    /*        50%/ #{$s $s};*/
+                }
+                .daily_kcal{
+                    border-radius: 45px;
+                    padding: 10px 0;
+                }
+                .lvl1{
+                    background-color: rgba(101, 136, 101, 0.62);
+                }
+                .lvl2{
+                    background-color: rgba(70, 138, 70, 0.65);
+                }
+                .lvl3{
+                    background-color: green;
+                }
+                .lvl4{
+                    background-color: #004d00;
+                }
+                .lvl5{
+                    background-color: #003100;
+                }
+            </style>
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
+    </head>
+    <body>
+        <header>
+            <h1>
+                <a href="{{ url('app_login') }}">
+{#                    Your#}
+
+{#                    {% if is_granted('ROLE_SUPER_ADMIN_1') %}#}
+{#                        <a class="nav-link" href="{{ path('show_dash') }}">Dashboard</a>#}
+{#                    {% endif %}#}
+                    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                        <a class="nav-link" href="{{ path('app_login') }}">{{ app.user.name }}</a>'s
+                    {% else %}
+                        <a class="nav-link" href="{{ path('app_login') }}">Your</a>
+                    {% endif %}
+
+                </a>
+                nutrition journal
+            </h1>
+            <label>
+                <img src="">
+                <a href="{{ url('add_meal') }}"> New meal </a>
+            </label>
+            <div class="modal-body">
+                <ul class="nav flex-column">
+                    {% if is_granted('ROLE_SUPER_ADMIN_1') %}
+                        <a class="nav-link" href="{{ path('show_dash') }}">Dashboard</a>
+                    {% endif %}
+                    {% if is_granted('ROLE_EATER') %}
+                        <a class="nav-link" href="{{ path('app_logout') }}">Logout</a>
+                    {% else %}
+                        <a class="nav-link" href="{{ path('app_login') }}">Login</a>{% endif %}
+                </ul>
+            </div>
+        </header>
+        {% block body %}
+        {% endblock %}
+    </body>
+</html>

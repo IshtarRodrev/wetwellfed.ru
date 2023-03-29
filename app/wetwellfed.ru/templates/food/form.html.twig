@@ -1,0 +1,18 @@
+
+    {{ form_start(foodForm) }}
+    {{ form_row(foodForm.name,{
+        label: 'Title'
+    }) }}
+    {{ form_row(foodForm.category) }}
+    {{ form_row(foodForm.calories, {
+        label: 'Energy (kcal/100g)'
+    }) }}
+    {{ form_row(foodForm.amountType, {
+        label: 'Measure'
+    }) }}
+    {{ form_row(foodForm.weight, {
+        label: 'Weight of a pack'
+    }) }}
+
+    <button type="submit" class="btn">Save</button>
+    {{ form_end(foodForm) }}

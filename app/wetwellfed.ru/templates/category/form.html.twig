@@ -1,0 +1,19 @@
+
+{{ form_start(categoryForm) }}
+    {{ form_row(categoryForm.name,{
+        label: 'Title'
+    }) }}
+{#    {% if categoryForm.parent != NULL %}#}
+{#        parent exists#}
+{#    {% else %}#}
+{#        {no parent}#}
+{#    {% endif %}#}
+    {{ form_row(categoryForm.parent,{
+        label: 'Related as a subcategory to'
+    }) }}
+{#    {% else %}#}
+{#        {no parent}#}
+{#    {% endif %}#}
+
+<button type="submit" class="btn">Save! </button>
+{{ form_end(categoryForm) }}

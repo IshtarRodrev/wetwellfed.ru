@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit menu item{% endblock %}
+
+{% block body %}
+    <h2>Let's edit {{ food.name }}!</h2>
+
+    {% include 'food/form.html.twig' %}
+
+{% endblock %}

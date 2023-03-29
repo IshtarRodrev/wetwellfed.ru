@@ -1,0 +1,11 @@
+<!--brunch.html.twig-->
+{% for category in categories %}
+    <li>
+        <a href="{{ url('edit_category', {id: category.id}) }}">{{ category.name }}</a> ({{ category.foods|length }} items)
+        {% if category.children %}
+            <ul>
+                {% include "category/brunch.html.twig" with {'categories': category.children} %}
+            </ul>
+        {% endif %}
+    </li>
+{% endfor %}

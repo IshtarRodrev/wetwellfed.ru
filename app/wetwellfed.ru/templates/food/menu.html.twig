@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Food list{% endblock %}
+
+{% block body %}
+    <h2>Food list - { categories }}</h2>
+    <table class="table books-table table-hover table-bordered" id="books-list" rules="rows" cellpadding="5%" width="80%">
+{#        align="center" #}
+        <tbody>
+        {% for food in paginator %}
+            <tr align="center">
+                <td>{{ loop.index }}</td>
+                {#                <h4>{{ food }}</h4>#}
+                <td>{{ food.category }}</td>
+                <td>{{ food.name }}</td>
+                <td>{{ food.calories }} kcal</td>
+                <td>
+                    <a href="{{ url('edit_food', {id: food.id}) }}">edit</a>
+                    <form action="{{ url('delete_food', {id: food.id}) }}" method="post">
+                        <input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
+                        <button type="submit">remove</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Category</th>
+                <th scope="col">Title</th>
+                <th scope="col">Value per 100g</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+    </table>
+
+    {% if maxPages > 1 %}
+        <ul class="pagination" display="inline" decoration="none">
+            <li class="page-item {{ currentPage == 1 ? 'disabled' }}">
+                <a class="page-link" aria-label="Previous" href="{{ path('food', {page: currentPage-1 < 1 ? 1 : currentPage-1}) }}">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            {% for i in 1..maxPages %}
+                <li class="page-item {{ currentPage == i ? 'active' }}">
+                    <a class="page-link" href="{{ path('food', {page: i}) }}">{{ i }}</a>
+                </li>
+            {% endfor %}
+
+            <li {{ currentPage == maxPages ? 'class="disabled"' }}>
+                <a class="page-link" aria-label="Next" href="{{ path('food', {page: currentPage+1 <= maxPages ? currentPage+1 : currentPage}) }}">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    {% endif %}
+
+    <span>
+        <br><br>
+        Can't find the proper item? Contribute our project by
+        <a href="{{ url('add_food') }}">adding more food</a>
+        to the menu!
+    </span>
+{% endblock %}
