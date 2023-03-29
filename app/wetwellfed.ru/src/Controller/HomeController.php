@@ -114,13 +114,14 @@ class HomeController extends AbstractController
             'id' => $uid,
         ]);
 
-        $timeline = $mealRepository->getYearTrack($eater);
+        $result = $mealRepository->getYearTrack($eater);
 
 //        var_dump($timeline);
 //        die;
 
         return new Response($this->render('home/year.html.twig', [
-            'timeline' => $timeline,
+            'timeline' => $result['timeline'],
+            'months' => $result['months'],
         ]));
     }
 

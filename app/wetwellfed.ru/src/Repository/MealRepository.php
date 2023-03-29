@@ -86,7 +86,7 @@ class MealRepository extends ServiceEntityRepository
 //        var_dump($timeline);
 //        echo "</pre>";
 //        die;
-        $result = $this->createQueryBuilder('m')
+        $rows = $this->createQueryBuilder('m')
             ->select('m.eatenAt', 'm.calories')
             ->where('m.eater = :eater')
             ->setParameter('eater', $eater)
@@ -101,11 +101,11 @@ class MealRepository extends ServiceEntityRepository
             ->getResult() // GIVES EMPTY ARRAY!??
         ;
 
-//        var_dump($result);
+//        var_dump($rows);
 //        die();
 
         $day = [];
-        foreach ($result as $row)
+        foreach ($rows as $row)
         {
             $date = $row["eatenAt"]->format('Y-m-d');
             $kcal = $row["calories"] ?? 0;
@@ -157,14 +157,14 @@ class MealRepository extends ServiceEntityRepository
 
     public function getYearTrack(Eater $eater)
     {
-        $n = date("w", time());
-        if ($n == 0)
-            $n = 7;
-        $n -= 1; // это мы делаем, потому что индексы сместились и теперь пн был = 1
+        $todayNum = date("w", time());
+        if ($todayNum == 0)
+            $todayNum = 7;
+        $todayNum -= 1; // это мы делаем, потому что индексы сместились и теперь пн был = 1
 
         // общее кол-во дней, которые ты исопльзуешь для построения таблички). т.е. если сегодня понедельник, то 365 + 1
         $needWeek = 52;
-        $allDays = $needWeek * 7 + $n;
+        $allDays = $needWeek * 7 + $todayNum;
 
         $before = new \DateTime("-$allDays days");
 
@@ -176,7 +176,7 @@ class MealRepository extends ServiceEntityRepository
         {
             $time = strtotime( '-'. $i .' days', time());
             $date = \date('Y-m-d', $time);
-            $idxWeekday = (($n - ($i % 7)) + 7) % 7;
+            $idxWeekday = (($todayNum - ($i % 7)) + 7) % 7;
             $timeline[$idxWeekday][$date] = ['date' => $date, 'kcal' => 0, 'lvl' => 1];
         }
 
@@ -187,7 +187,7 @@ class MealRepository extends ServiceEntityRepository
         $now->setTimezone($timezone);
         $before->setTimezone($timezone);
 
-        $result = $this->createQueryBuilder('m')
+        $rows = $this->createQueryBuilder('m')
             ->select('m.eatenAt', 'm.calories')
             ->where('m.eater = :eater')
             ->setParameter('eater', $eater)
@@ -202,7 +202,7 @@ class MealRepository extends ServiceEntityRepository
             ->getResult() // GIVES EMPTY ARRAY!??
         ;
 
-        foreach ($result as $row)
+        foreach ($rows as $row)
         {
             $date = $row["eatenAt"]->format('Y-m-d');
             $kcal = $row["calories"];
@@ -237,7 +237,11 @@ class MealRepository extends ServiceEntityRepository
             }
         }
 
-        return $timeline;
+        $result = [
+            'timeline' => $timeline,
+            'months' => [],
+        ];
+        return $result;
     }
 
     /**
