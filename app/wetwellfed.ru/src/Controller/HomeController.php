@@ -116,12 +116,53 @@ class HomeController extends AbstractController
 
         $result = $mealRepository->getYearTrack($eater);
 
-//        var_dump($timeline);
-//        die;
+//        $result['months'] = [
+//            // № of month => amount of weeks
+//            1 => 3,
+//            2 => 3,
+//            3 => 3,
+//            4 => 3,
+//            5 => 3,
+//            6 => 3,
+//            7 => 3,
+//            8 => 3,
+//            9 => 3,
+//            10 => 3,
+//            11 => 3,
+//            12 => 3,
+//        ];
+
+//        $result['months'] = [
+//            // № of month => amount of weeks
+//            [ 'name' => "Jan", "weeksInMonth" => 5],
+//            [ 'name' => "Feb", "weeksInMonth" => 5],
+//            [ 'name' => "Mar", "weeksInMonth" => 5],
+//            [ 'name' => "Apr", "weeksInMonth" => 5],
+//            [ 'name' => "May", "weeksInMonth" => 5],
+//            [ 'name' => "Jun", "weeksInMonth" => 4],
+//            [ 'name' => "Jul", "weeksInMonth" => 4],
+//            [ 'name' => "Aug", "weeksInMonth" => 4],
+//            [ 'name' => "Sep", "weeksInMonth" => 4],
+//            [ 'name' => "Oct", "weeksInMonth" => 4],
+//            [ 'name' => "Nov", "weeksInMonth" => 4],
+//            [ 'name' => "Dec", "weeksInMonth" => 4],
+//        ];
+
+        $weekDays = [
+            'Mon',
+            'Tue',
+            'Wed',
+            'Thu',
+            'Fri',
+            "Sat",
+            "Sun"
+        ];
+
 
         return new Response($this->render('home/year.html.twig', [
             'timeline' => $result['timeline'],
             'months' => $result['months'],
+            'weekDays' => $weekDays,
         ]));
     }
 

@@ -171,13 +171,64 @@ class MealRepository extends ServiceEntityRepository
         $timeline = [
             [], [], [], [], [], [], [],
         ];
+        $months = [
+//            [ 'name' => "Jan", "weeksInMonth" => 0],
+        ];
+        //  TODO:
+        //   $result['months'] = [
+        //       // № of month => amount of weeks
+        //       [ 'name' => "Jan", "weeksInMonth" => 5],
+        //       [ 'name' => "Feb", "weeksInMonth" => 5],
+        //       [ 'name' => "Mar", "weeksInMonth" => 5],
+        //       [ 'name' => "Apr", "weeksInMonth" => 5],
+        //       [ 'name' => "May", "weeksInMonth" => 5],
+        //       [ 'name' => "Jun", "weeksInMonth" => 4],
+        //       [ 'name' => "Jul", "weeksInMonth" => 4],
+        //       [ 'name' => "Aug", "weeksInMonth" => 4],
+        //       [ 'name' => "Sep", "weeksInMonth" => 4],
+        //       [ 'name' => "Oct", "weeksInMonth" => 4],
+        //       [ 'name' => "Nov", "weeksInMonth" => 4],
+        //       [ 'name' => "Dec", "weeksInMonth" => 4],
+        //   ];
 
-        for ($i = $allDays; $i >=0; $i--)
+        $lastMonth = \date('M', strtotime( "-$allDays days", time()));
+
+        for ($weeksInMonth = 0, $i = $allDays; $i >=0; $i--)
         {
             $time = strtotime( '-'. $i .' days', time());
             $date = \date('Y-m-d', $time);
             $idxWeekday = (($todayNum - ($i % 7)) + 7) % 7;
-            $timeline[$idxWeekday][$date] = ['date' => $date, 'kcal' => 0, 'lvl' => 1];
+            //шагаем по неделям, сбрасываем счётчик в начале нового месяца
+
+            if (\date('d', $time) == 1) {
+                if ($weeksInMonth > 0) {
+                    $arr = ['name' => $lastMonth, 'weeksInMonth' => $weeksInMonth];
+                    $months[] = $arr;
+                }
+                $lastMonth = \date('M', $time);
+
+                $weeksInMonth = 0;
+            }
+            //складываем количество недель в каждый месяц
+            // текущий месяц???
+            if ((\date('w', $time) == 1)) {
+                $weeksInMonth++;
+            }
+
+            $cssClass = 'border-class ';
+
+            $nextDayTime = strtotime( '-'. ($i - 1) .' days', time());
+            $nextWeekTime = strtotime( '-'. ($i - 7) .' days', time());
+            $currentMoneth = \date('m', $time);
+            $nextWeekMoneth = \date('m', $nextWeekTime);
+            if ( $currentMoneth != $nextWeekMoneth ) {
+                $cssClass .= "border-right ";
+            }
+            if (\date('d', $nextDayTime) == 1 && (\date('w', $nextDayTime) != 1)) {;
+                $cssClass .= "border-bottom ";
+            }
+
+            $timeline[$idxWeekday][$date] = ['date' => $date, 'kcal' => 0, 'lvl' => 0, 'cssClass' => $cssClass];
         }
 
         $timezone = new \DateTimeZone("Europe/Moscow");
@@ -239,7 +290,7 @@ class MealRepository extends ServiceEntityRepository
 
         $result = [
             'timeline' => $timeline,
-            'months' => [],
+            'months' => $months,
         ];
         return $result;
     }
