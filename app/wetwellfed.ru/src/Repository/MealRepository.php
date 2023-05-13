@@ -48,11 +48,11 @@ class MealRepository extends ServiceEntityRepository
         return $paginator;
     }
 
-    public function getHistory(Eater $eater)
+    public function getHistory(Eater $eater, $days = 7)
     {
         $timezone = new \DateTimeZone("Europe/Moscow");
         $now = new \DateTime();
-        $before = new \DateTime('-7 days');
+        $before = new \DateTime("-$days days");
 
         $now->setTimezone($timezone);
         $before->setTimezone($timezone);
@@ -65,7 +65,7 @@ class MealRepository extends ServiceEntityRepository
             $i++;
             $timeline[$date] = ['date' => $date, 'kcal' => 0];
         }
-        while ($i < 7);
+        while ($i < $days);
         /*
          * $timeline должен быть в таком стиле:
          * [

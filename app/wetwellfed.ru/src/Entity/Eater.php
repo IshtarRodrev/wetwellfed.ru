@@ -27,6 +27,11 @@ class Eater implements UserInterface, PasswordAuthenticatedUserInterface
     private $email;
 
     /**
+     * @ORM\Column(type="integer", length=80)
+     */
+    private ?int $telegram_id = null;
+
+    /**
      * @ORM\Column(type="json")
      */
     private $roles = [];
@@ -69,7 +74,6 @@ class Eater implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __construct()
     {
-
     }
 
     public function getId(): ?int
@@ -105,6 +109,17 @@ class Eater implements UserInterface, PasswordAuthenticatedUserInterface
     public function getUsername(): string
     {
         return (string) $this->email;
+    }
+
+    public function getTelegram_id(): ?int
+    {
+        return $this->telegram_id;
+    }
+
+    public function setTelegram_id(int $telegram_id): self
+    {
+        $this->telegram_id = $telegram_id;
+        return $this;
     }
 
     /**
