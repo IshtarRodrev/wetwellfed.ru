@@ -37,8 +37,6 @@ class MealController extends AbstractController
     public function index(Security $security, Environment $twig, MealRepository $mealRepository, int $page = 1): Response
     {
         $eater = $security->getUser();
-        var_dump($eater);
-        die;
         $paginator = $mealRepository->findByEater($eater, $page);
         $maxPages = ceil($paginator->count() / $mealRepository::PAGE_SIZE);
 
