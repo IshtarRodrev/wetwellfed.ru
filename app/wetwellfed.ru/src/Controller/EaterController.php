@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-// ...
 use App\Entity\Eater;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,18 +17,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class EaterController extends AbstractController
 {
-
-    private $twig;
-    private $entityManager;
-    private $bus;
-
-    public function __construct(Environment $twig, EntityManagerInterface $entityManager, MessageBusInterface $bus)
-    {
-        $this->twig = $twig; // избавляемся от дублирования Environment $twig в методах
-        $this->entityManager = $entityManager;
-        $this->bus = $bus;
-    }
-
     /**
      * @Route("/registrate", name="app_register")
      * @return Response
@@ -39,12 +26,9 @@ class EaterController extends AbstractController
         // ... e.g. get the user data from a registration form
         $user = new Eater();
         $form = $this->createForm(RegistrationType::class, $user);
-
         $form->handleRequest($request);
-//        $plaintextPassword = "";
 
-        if ($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $user = $form->getData();
 
             // encode the plain password
@@ -54,13 +38,12 @@ class EaterController extends AbstractController
                 $user->getPassword(),
             );
             $user->setPassword($hashedPassword);
-            $user->setRoles(["ROLE_EATER"]); // TODO: Add ROLES column to the DB!!
+            $user->setRoles(["ROLE_EATER"]);
 
-
-            //TODO: формула Харриса-Бенедикта https://en.wikipedia.org/wiki/Harris–Benedict_equation
+            //NOTE: формула Харриса-Бенедикта https://en.wikipedia.org/wiki/Harris–Benedict_equation
             //      BMR для мужчин = 88,36 + (13,4 × вес в кг) + (4,8 × рост в см) – (5,7 × возраст в годах).
             //      BMR для женщин = 447,6 + (9,2 × вес в кг) + (3,1 × рост в см) – (4,3 × возраст в годах).
-            //TODO: Формула по Миффлину – Сан Жеору:
+            //NOTE: Формула по Миффлину – Сан Жеору:
             //      Женская формула: 10 х вес + 6,25 х рост – 5 х возраст – 161;
             //      Мужская формула: 10 х вес + 6,25 х рост – 5 х года + 5.
             // Формула по Харрису-Бенедикту:
@@ -83,7 +66,6 @@ class EaterController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
             return $this->redirectToRoute('meal');
-            // ...
         }
 
         return $this->render('eater/registrate.html.twig', [
@@ -104,7 +86,6 @@ class EaterController extends AbstractController
         $lastUsername = $authenticationUtils->getLastUsername();
 
         return $this->render('eater/login.html.twig', [
-//            'controller_name' => 'EaterController',
             'last_username' => $lastUsername,
             'error'         => $error,
         ]);
@@ -120,12 +101,3 @@ class EaterController extends AbstractController
         return $this->redirectToRoute('meal');
     }
 }
-//TODO:
-// 1. Изменить дататайм в дату в ентити
-// 2. Изменить изменить форму регистрации на дату
-// 3. Применить миграцию изменения дататайм в дату
-// 4. Добавить роль ROLE_EATER пользователям при регистрации.
-// 4.2 Добавить поле height
-// 5. Высчитывать суточное потребление калорий для человека при регистрации
-// 6. Написать logout
-// 7. Добавить отношение в meal по eater_id

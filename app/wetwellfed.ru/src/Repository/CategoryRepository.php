@@ -87,7 +87,7 @@ class CategoryRepository extends ServiceEntityRepository
 
         if ($flush) {
             $this->_em->flush();
-            // SAME AS
+            // SAME AS:
             //$this->getEntityManager()->flush();
         }
     }

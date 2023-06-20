@@ -37,7 +37,7 @@ class TelegramController extends AbstractController
         }
         $logger->debug('Telegram webhook response: ', [$data]);
 
-        $reply = []; // TODO: Prepare array to answer
+        $reply = []; // Prepare array to answer
         $nickname = 'human';
         $chat_id = -1;
         if (isset($data['message']) && isset($data['message']['from']) && isset($data['message']['from']['id'])) {
@@ -50,10 +50,10 @@ class TelegramController extends AbstractController
 
             if (isset($data['message']['text'])) {
                 $messageText = preg_split("/[ ]+/", $data['message']['text']);
-                $logger->debug('$messageText', $messageText); //OR next($messageText)
+                $logger->debug('$messageText', $messageText);
                 $logger->debug('$data["message"]["text"]', [$data['message']['text']]);
 
-                if ($eater && $data['message']['text'] == "today's status") {
+                if ($eater && $data['message']['text'] == "today's status") { // record reply to btn_1
                     $daily = $eater->getKcalDayNorm();
                     $score = "";
                     $day = $entityManager->getRepository(Meal::class)
@@ -87,8 +87,8 @@ class TelegramController extends AbstractController
                         )),
                     );
                     $logger->debug('KCAL FOR CURRENT DAY REQUIRED. ', $messageText);
-                } // TODO: RECORD REPLY TO BTN_1
-                elseif ($eater && $data['message']['text'] == "week history") {
+                }
+                elseif ($eater && $data['message']['text'] == "week history") { // record reply to btn_2
                     $daily = $eater->getKcalDayNorm();
                     $result = "";
                     $day = $entityManager->getRepository(Meal::class)
@@ -122,12 +122,11 @@ class TelegramController extends AbstractController
                         )),
                     );
                     $logger->debug('LAST WEEK HISTORY REQUIRED. ', $messageText);
-                } // TODO: RECORD REPLY TO BTN_2
-                elseif ($messageText[0] === '/start') {
+                }
+                elseif ($messageText[0] === '/start') { // trying to find hashed id
                     // приветственное
                     $logger->debug('START COMMAND CALLED. ', $messageText);
-                    if (isset($messageText[1])) {
-
+                    if (isset($messageText[1])) { // trying to get hashed id
                         $authHash = $messageText[1];
 
                         // get site id from hash
@@ -136,7 +135,7 @@ class TelegramController extends AbstractController
                         $logger->debug('Telegram webhook response: START COMMAND CALLED. HASH RECEIVED AND READY TO BE CONFIRMED ', [$messageText[1]]); //OR next($messageText)
 
                         $id = -1;
-                        if ($cacheItem->IsHit()) { // && !isset($$eater)
+                        if ($cacheItem->IsHit()) { // hashed id hits cache. first hello message.
 
                             $id = $cacheItem->get();
                             $logger->debug('CACHE CONTENTS CONFIRMED HASH_ID ', [$id]);
@@ -145,7 +144,7 @@ class TelegramController extends AbstractController
                             $logger->debug('EATER FOUND BY ID: ', [$id]);
                             $nickname = $eater->getName();
 
-                            //записать в базу тг
+                            // записать в базу тг
                             $eater->setTelegram_id($chat_id);
                             $entityManager->flush();
                             $logger->debug('TG ID HAS BEEN RECORDED TO DATABASE');
@@ -153,7 +152,7 @@ class TelegramController extends AbstractController
                             $result = "%first_hello%";
                             $reply = array(
                                 "chat_id" => $chat_id, // where message goes to
-                                "text" => "Hi,$nickname! Thank you for trying out our very first telegram bot.\n Here you just check your daily calories, more functions will be introduced soon.\n \n So, what should I show you next? 🤖 \n $result ",
+                                "text" => "Hi, $nickname! Thank you for trying out our very first telegram bot.\nHere you just check your daily calories, more functions will be introduced soon.\n\nSo, what should I show you next? 🤖 \n $result ",
                                 "parse_mode" => "html",
                                 'reply_markup' => json_encode(array(
                                     'keyboard' => array(
@@ -172,14 +171,14 @@ class TelegramController extends AbstractController
                                     'resize_keyboard' => TRUE,
                                 )),
                             );
-                        } // TODO: HASHED ID HITS CACHE. FIRST HELLO MESSAGE.
-                        else {
+                        }
+                        else { // hashed id doesn't match cache. error.
                             $logger->debug('ALERT! INCORRECT CACHE CONTENT FOR AUTH_TOKEN: ', [$authHash]);
                             //throw $this->createAccessDeniedException();
                             exit();
-                        } // TODO: HASHED ID DOESN'T MATCH CACHE. ERROR.
-                    } // TODO: TRYING TO GET HASHED ID
-                    elseif ($eater && $eater->getTelegram_id()) {
+                        }
+                    }
+                    elseif ($eater && $eater->getTelegram_id()) { // no hash id. trying to get current eater instance. ignore if eater already authenticated.
                         $logger->debug('START COMMAND DUPLICATED ', $messageText);
                         $result = "%hello_again_$nickname%";
                         $reply = array(
@@ -203,12 +202,12 @@ class TelegramController extends AbstractController
                                 'resize_keyboard' => TRUE,
                             )),
                         );
-                    } // TODO: NO HASH ID. TRYING TO GET CURRENT EATER INSTANCE. IGNORE IF EATER ALREADY AUTHENTICATED
-                    else {
+                    }
+                    else { // hashed id is empty. eater tg_id not found in db. error!
                         $result = "%user_is_not_eater%";
                         $reply = array(
                             "chat_id" => $chat_id,
-                            "text" => "Sorry, $nickname, can`t find your info. \n\n It might be due to some mistake or you just didnt login using the site. This bot belongs to wetwellfed.ru and it can`t itself process any data yet. \n \nPlease make sure you`re authorised using the link from the site wetwellfed.ru and try again. 🤖 \n $result ",
+                            "text" => "Sorry, $nickname, can`t find your info. \n\nIt might be due to some mistake or you just didnt login using the site. This bot belongs to wetwellfed.ru and it can`t itself process any data yet. \n\nPlease make sure you`re authorised using the link from the site wetwellfed.ru and try again. 🤖 \n $result ",
                             "parse_mode" => "html",
                             'reply_markup' => json_encode(array(
                                 'inline_keyboard' => array(
@@ -225,9 +224,9 @@ class TelegramController extends AbstractController
                             )),
                         );
                         $logger->debug('START COMMAND CALLED. NO HASH RECEIVED! ', $messageText);
-                    } // TODO: HASHED ID IS EMPTY. EATER TG_ID NOT FOUND IN DB. ERROR!
-                } // TODO: TRYING TO FIND HASHED ID
-                elseif ($eater) {
+                    }
+                }
+                elseif ($eater) { // unrecognizable command
                     $logger->debug('UNRECOGNIZABLE REQUEST WAS SENT BUY USER', [$data]);
                     $result = "%wrong_request%";
                     $reply = array(
@@ -251,18 +250,18 @@ class TelegramController extends AbstractController
                             'resize_keyboard' => TRUE,
                         )),
                     );
-                } // TODO: UNRECOGNIZABLE COMMAND
-                else {
+                }
+                else { // unknown command. unknown user. error message!
                     $logger->debug('UNHANDLED REQUEST1 ', [$data]);
                     exit();
-                } // TODO: UNKNOWN COMMAND. UNKNOWN USER. ERROR MESSAGE!
+                }
             } else {
                 $logger->debug('UNHANDLED REQUEST2 ', [$data]);
                 exit();
             }
         }
 
-        // TODO: SET PREPARED REPLY
+        // set and call prepared reply
         $ch = curl_init("https://api.telegram.org/bot" . $this->botToken . "/sendMessage?" .
             http_build_query($reply));
         curl_setopt($ch, CURLOPT_POST, 1);
@@ -273,7 +272,6 @@ class TelegramController extends AbstractController
         $resultQuery = curl_exec($ch);
         curl_close($ch);
 
-        echo $resultQuery;
         exit();
     }
 
@@ -294,8 +292,6 @@ class TelegramController extends AbstractController
             $cacheItem->set($userId);          // set value
             $cacheItem->expiresAfter(60 * 60); // 1h
             $cachePool->save($cacheItem);
-            echo 'https://t.me/Nutrifier_bot?start=' . $authToken;
-            exit();
         }
 
         return $this->redirect('https://t.me/Nutrifier_bot?start=' . $authToken);

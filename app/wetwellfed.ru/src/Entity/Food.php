@@ -6,7 +6,6 @@ use App\Entity\Eater;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\FoodRepository; //ATTENTION!! MANUALLY ADDED!!!
 
 /**
  * @ORM\Entity(repositoryClass=FoodRepository::class)
@@ -52,34 +51,23 @@ class Food
     /**
     * @ORM\Column(type="integer")
     */
-    private $weight; //nullable=true
+    private $weight;
 
-//    public function __construct()
-//    {
-//        $this->category = new ArrayCollection();
-//    }
-
-    public function __toString(): string // При отображении связанных сущностей (в нашем случае, конференции, прикреплённой к комментарию) EasyAdmin попытается преобразовать объект конференции в строку. Если в объекте не будет реализован "магический" метод __toString(), то по умолчанию EasyAdmin выведет имя объекта вместе с первичным ключом (например, Conference #1). Чтобы сделать название связанной сущности более понятнее, определим этот метод в классе Conference
+    public function __toString(): string
     {
         if ($this->amount_type === Food::AMOUNT_TYPE_PACK)
         {
+            return sprintf("%s (%dg pack) - %dkcal ",$this->name, $this->weight, $this->calories);
             return $this->name . ',  ' . $this->weight . 'g ' . "pack" . ' - ' . $this->calories . 'kcal ';
         }
         else
-        return $this->name . ' - ' . $this->calories . 'kcal/100g ';
+        return sprintf("%s - %dkcal/100g ",$this->name, $this->calories);
     }
 
     public function getId(): ?int
     {
         return $this->id;
     }
-
-//    public function computeSlug(SluggerInterface $slugger)
-//    {
-//        if (!$this->slug || '-' === $this->slug) {
-//        $this->slug = (string) $slugger->slug((string) $this)->lower();
-//        }
-//    }
 
     public function getCategory(): ?Category
     {
@@ -158,38 +146,4 @@ class Food
         $tare = $this->getAmountType()==0 ? '(' . $this->getWeight() . ' grams portion)' : '';
         return sprintf('%s %s', $this->getName(), $tare);
     }
-
-//    public function addComment(Comment $comment): self
-//    {
-//        if (!$this->comments->contains($comment)) {
-//            $this->comments[] = $comment;
-//            $comment->setConference($this);
-//        }
-//
-//        return $this;
-//    }
-//
-//    public function removeComment(Comment $comment): self
-//    {
-//        if ($this->comments->removeElement($comment)) {
-//        // set the owning side to null (unless already changed)
-//            if ($comment->getConference() === $this) {
-//                $comment->setConference(null);
-//            }
-//        }
-//
-//        return $this;
-//    }
-//
-//    public function getSlug(): ?string
-//    {
-//        return $this->slug;
-//    }
-//
-//    public function setSlug(string $slug): self
-//    {
-//        $this->slug = $slug;
-//
-//        return $this;
-//    }
 }

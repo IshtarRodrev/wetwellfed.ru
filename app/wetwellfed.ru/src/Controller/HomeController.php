@@ -20,58 +20,43 @@ use App\Form\HomeMealAddType;
 
 class HomeController extends AbstractController
 {
-    private $twig;
-    private $entityManager;
-    private $bus;
-
-    public function __construct(Environment $twig, EntityManagerInterface $entityManager, MessageBusInterface $bus)
-    {
-        $this->twig = $twig; // избавляемся от дублирования Environment $twig в методах
-        $this->entityManager = $entityManager;
-        $this->bus = $bus;
-    }
-
     /**
      * @Route("/", name="homepage")
      * @return Response
      */
-
-    // TODO: 1. dateformat()
-    //       2. Цветовая таблица зависимости /
     public function index(Security $security, Request $request, Environment $twig, EaterRepository $eaterRepository, MealRepository $mealRepository, ManagerRegistry $doctrine): Response
     {
-        if (!$security->getUser()) {
-            return $this->redirectToRoute('login');
-        }
         $uid = $security->getUser();
+        if (!$uid) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $eater = $eaterRepository->findOneBy([
             'id' => $uid,
         ]);
+
         $BMR = $eater->getKcalDayNorm();
         $todayScore = $mealRepository->getCalToday($eater);
+        $result = $mealRepository->getYearTrack($eater);
 
-        $this->entityManager = $doctrine->getManager();
-        $meal = new Meal();
-        $form = $this->createForm(HomeMealAddType::class, $meal, ['eater' => $uid]);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $meal = $form->getData();
-            $meal->setEater($security->getUser());
-            $mealRepository->add($meal);
-            $this->entityManager->persist($meal);
-            $this->entityManager->flush();
-            return $this->redirectToRoute('homepage');
-        }
+        $weekDays = [
+            'Mon',
+            'Tue',
+            'Wed',
+            'Thu',
+            'Fri',
+            "Sat",
+            "Sun"
+        ];
 
-        return new Response($this->renderForm('home/index.html.twig', [
+        return new Response($this->render('home/index.html.twig', [
             'eater' => $eater,
             'maxScore' => $BMR,
             'todayScore' => $todayScore,
-            'homeForm' => $form,
+            'timeline' => $result['timeline'],
+            'months' => $result['months'],
+            'weekDays' => $weekDays,
         ]));
-//        return new Response($this->renderForm('meal/add.html.twig', [
-//            'mealForm' => $form,
-//        ]));
     }
 
     /**
@@ -88,81 +73,10 @@ class HomeController extends AbstractController
         $eater = $eaterRepository->findOneBy([
             'id' => $uid,
         ]);
-
         $timeline = $mealRepository->getHistory($eater, 7);
-
-//        var_dump($timeline);
-//        die;
 
         return new Response($this->render('home/history.html.twig', [
             'timeline' => $timeline,
-        ]));
-    }
-
-    /**
-     * @Route("/history/year", name="home_meal_year")
-     * @return Response
-     */
-    public function yearTrack(Security $security, Request $request, EaterRepository $eaterRepository, MealRepository $mealRepository, ManagerRegistry $doctrine): Response
-    {
-        $uid = $security->getUser();
-        if (!$uid) {
-            return $this->redirectToRoute('app_login');
-        }
-
-        $eater = $eaterRepository->findOneBy([
-            'id' => $uid,
-        ]);
-
-        $result = $mealRepository->getYearTrack($eater);
-
-//        $result['months'] = [
-//            // № of month => amount of weeks
-//            1 => 3,
-//            2 => 3,
-//            3 => 3,
-//            4 => 3,
-//            5 => 3,
-//            6 => 3,
-//            7 => 3,
-//            8 => 3,
-//            9 => 3,
-//            10 => 3,
-//            11 => 3,
-//            12 => 3,
-//        ];
-
-//        $result['months'] = [
-//            // № of month => amount of weeks
-//            [ 'name' => "Jan", "weeksInMonth" => 5],
-//            [ 'name' => "Feb", "weeksInMonth" => 5],
-//            [ 'name' => "Mar", "weeksInMonth" => 5],
-//            [ 'name' => "Apr", "weeksInMonth" => 5],
-//            [ 'name' => "May", "weeksInMonth" => 5],
-//            [ 'name' => "Jun", "weeksInMonth" => 4],
-//            [ 'name' => "Jul", "weeksInMonth" => 4],
-//            [ 'name' => "Aug", "weeksInMonth" => 4],
-//            [ 'name' => "Sep", "weeksInMonth" => 4],
-//            [ 'name' => "Oct", "weeksInMonth" => 4],
-//            [ 'name' => "Nov", "weeksInMonth" => 4],
-//            [ 'name' => "Dec", "weeksInMonth" => 4],
-//        ];
-
-        $weekDays = [
-            'Mon',
-            'Tue',
-            'Wed',
-            'Thu',
-            'Fri',
-            "Sat",
-            "Sun"
-        ];
-
-
-        return new Response($this->render('home/year.html.twig', [
-            'timeline' => $result['timeline'],
-            'months' => $result['months'],
-            'weekDays' => $weekDays,
         ]));
     }
 
@@ -187,11 +101,6 @@ class HomeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $meal = $form->getData();
             $entityManager->flush();
-
-//            $this->addFlash(
-//                'success',
-//                'The item has been edited'
-//            );
 
             return $this->redirectToRoute('meal');
         }

@@ -2,39 +2,26 @@
 
 namespace App\Controller;
 
-use App\Entity\Meal; //?
-use App\Entity\Food; //?
+use App\Entity\Food;
 use App\Form\FoodAddType;
-//use App\Message\MealMessage;
 use App\Repository\FoodRepository;
 use Doctrine\ORM\EntityManagerInterface;
-//use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 use Doctrine\Persistence\ManagerRegistry;
 
-//use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-//use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 use App\Repository\CategoryRepository;
 
 class FoodController extends AbstractController
 {
-    private $twig;
-    private $entityManager;
-    private $bus;
+    private EntityManagerInterface $entityManager;
 
-    public function __construct(Environment $twig, EntityManagerInterface $entityManager, MessageBusInterface $bus)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->twig = $twig; // избавляемся от дублирования Environment $twig в методах
         $this->entityManager = $entityManager;
-        $this->bus = $bus;
     }
 
     /**
@@ -43,9 +30,7 @@ class FoodController extends AbstractController
      */
     public function menu(Security $security, Environment $twig, CategoryRepository $categoryRepository, FoodRepository $foodRepository, int $page = 1): Response
     {
-//        $categories = $categoryRepository->findAll();
         $eater = $security->getUser();
-
         $paginator = $foodRepository->findByEater($eater, $page);
         $categories = $categoryRepository->findBy(
             ['eater' => $eater],
@@ -57,7 +42,6 @@ class FoodController extends AbstractController
             'paginator' => $paginator,
             'maxPages' => $maxPages,
             'currentPage' => $page,
-//            'category' => '$categories',
         ]));
     }
 

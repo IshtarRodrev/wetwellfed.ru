@@ -15,7 +15,7 @@ use App\Entity\Eater;
  *
  * @method Food|null find($id, $lockMode = null, $lockVersion = null)
  * @method Food|null findOneBy(array $criteria, array $orderBy = null)
-// * @method Food[]    findAll()
+ * @method Food[]    findAll()
  * @method Food[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class FoodRepository extends ServiceEntityRepository

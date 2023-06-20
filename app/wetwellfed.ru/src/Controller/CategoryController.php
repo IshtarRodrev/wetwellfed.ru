@@ -2,14 +2,12 @@
 
 namespace App\Controller;
 
-use App\Entity\Category; //?
+use App\Entity\Category;
 use App\Entity\Eater;
-use App\Entity\Food; //?
+use App\Entity\Food;
 use App\Form\CategoryAddType;
-//use App\Message\MealMessage;
 use App\Repository\FoodRepository;
 use Doctrine\ORM\EntityManagerInterface;
-//use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,23 +17,17 @@ use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 use Doctrine\Persistence\ManagerRegistry;
 
-//use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-//use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 use App\Repository\CategoryRepository;
 
 class CategoryController extends AbstractController
 {
-    private $twig;
-    private $entityManager;
-    private $bus;
+    private EntityManagerInterface $entityManager;
 
-    public function __construct(Environment $twig, EntityManagerInterface $entityManager, MessageBusInterface $bus)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->twig = $twig; // избавляемся от дублирования Environment $twig в методах
         $this->entityManager = $entityManager;
-        $this->bus = $bus;
     }
 
     /**

@@ -50,9 +50,9 @@ class Category
         $this->children = new ArrayCollection();
     }
 
-    public function __toString(): string // При отображении связанных сущностей (в нашем случае, конференции, прикреплённой к комментарию) EasyAdmin попытается преобразовать объект конференции в строку. Если в объекте не будет реализован "магический" метод __toString(), то по умолчанию EasyAdmin выведет имя объекта вместе с первичным ключом (например, Conference #1). Чтобы сделать название связанной сущности более понятнее, определим этот метод в классе Conference
+    public function __toString(): string
     {
-        return $this->name . ':/'; // TODO: Для отображения вложенных категорий колдовать здесь
+        return $this->name . ''; // NOTE: Для отображения вложенных категорий колдовать здесь
     }
 
     public function getId(): ?int
@@ -68,7 +68,6 @@ class Category
     public function setParent(?self $parent): self
     {
         $this->parent = $parent;
-
         return $this;
     }
 

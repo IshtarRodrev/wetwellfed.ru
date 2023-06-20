@@ -36,8 +36,8 @@
     </table>
 
     {% if maxPages > 1 %}
-        <ul class="pagination" display="inline" decoration="none">
-            <li class="page-item {{ currentPage == 1 ? 'disabled' }}">
+        <ul class="pagination">
+            <li class="page-item-{{ currentPage == 1 ? 'disabled' }}">
                 <a class="page-link" aria-label="Previous" href="{{ path('food', {page: currentPage-1 < 1 ? 1 : currentPage-1}) }}">
                     <span aria-hidden="true">&laquo;</span>
                 </a>

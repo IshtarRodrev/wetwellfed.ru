@@ -40,19 +40,19 @@
     </table>
 
     {% if maxPages > 1 %}
-        <ul class="pagination" display="inline" decoration="none">
-            <li class="page-item {{ currentPage == 1 ? 'disabled' }}">
+        <ul class="pagination">
+            <li class="page-item-{{ currentPage == 1 ? 'disabled' : 'available' }}">
                 <a class="page-link" aria-label="Previous" href="{{ path('meal', {page: currentPage-1 < 1 ? 1 : currentPage-1}) }}">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
             {% for i in 1..maxPages %}
-                <li class="page-item {{ currentPage == i ? 'active' }}">
+                <li class="page-item-{{ currentPage == i ? 'active' : 'available' }}" display="inline" decoration="none">
                     <a class="page-link" href="{{ path('meal', {page: i}) }}">{{ i }}</a>
                 </li>
             {% endfor %}
 
-            <li {{ currentPage == maxPages ? 'class="disabled"' }}>
+            <li class="page-item-{{ currentPage == maxPages ? 'disabled' : 'available' }}">
                 <a class="page-link" aria-label="Next" href="{{ path('meal', {page: currentPage+1 <= maxPages ? currentPage+1 : currentPage}) }}">
                     <span aria-hidden="true">&raquo;</span>
                 </a>

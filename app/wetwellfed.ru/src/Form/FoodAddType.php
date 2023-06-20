@@ -4,26 +4,18 @@ namespace App\Form;
 
 use App\Entity\Eater;
 use App\Entity\Food;
-use Doctrine\ORM\Mapping\Entity;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\RadioType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Security;
-use Symfony\Component\Validator\Constraints\IsTrue;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 use App\Entity\Category;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-
 use Doctrine\ORM\EntityRepository;
-use App\Repository\CategoryRepository;
 
 class FoodAddType extends AbstractType
 {
@@ -37,7 +29,6 @@ class FoodAddType extends AbstractType
             ->add('category', EntityType::class, [
                 'class' => Category::class,
                 'placeholder' => '-- choose one --',
-//                'choices' => $category->getUsers(),
                 'query_builder' => function (EntityRepository $er) use ($options) {
                     return $er->createQueryBuilder('c')
                         ->where('c.eater = :eater')
@@ -54,14 +45,6 @@ class FoodAddType extends AbstractType
                 'required' => true,
                 'label' => 'cal / 100g'
             ])
-//            ->add('calories', CheckboxType::class, [
-//                'mapped' => false,
-//                'constraints' => [
-//                    new IsTrue([
-//                        'message' => 'You should agree to our terms.',
-//                    ]),
-//                ],
-//            ])
             ->add('amountType', ChoiceType::class, [
                 'choices'  => [
                     'Pack'  => Food::AMOUNT_TYPE_PACK,
@@ -71,7 +54,6 @@ class FoodAddType extends AbstractType
                 'multiple' => false
             ])
             ->add('weight', IntegerType::class, [
-                //
                 'required'   => false,
                 'label' => 'Вес одной единицы',
                 'attr' => [
@@ -89,7 +71,6 @@ class FoodAddType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-//            'data_class' => Food::class,
             'eater' => Eater::class,
         ]);
     }
@@ -99,7 +80,7 @@ class FoodAddType extends AbstractType
         $form = $context->getRoot();
         $food = $form->getData();
 
-        if ($food->getAmountType() === Food::AMOUNT_TYPE_PACK && $food->getWeight() < 1) // GRAM=1 PACK=0
+        if ($food->getAmountType() === Food::AMOUNT_TYPE_PACK && $food->getWeight() < 1) // Gram=1 Pack=0
         {
             $context
                 ->buildViolation('Ukazhite ves pachki')

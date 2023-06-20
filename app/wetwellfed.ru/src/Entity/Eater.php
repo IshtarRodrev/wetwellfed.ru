@@ -9,6 +9,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+
 /**
  * @ORM\Entity(repositoryClass=EaterRepository::class)
  */
@@ -27,7 +28,7 @@ class Eater implements UserInterface, PasswordAuthenticatedUserInterface
     private $email;
 
     /**
-     * @ORM\Column(type="integer", length=80)
+     * @ORM\Column(type="integer", length=80, nullable=true)
      */
     private ?int $telegram_id = null;
 
@@ -72,10 +73,6 @@ class Eater implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $kcalDayNorm;
 
-    public function __construct()
-    {
-    }
-
     public function getId(): ?int
     {
         return $this->id;
@@ -89,7 +86,6 @@ class Eater implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): self
     {
         $this->email = $email;
-
         return $this;
     }
 
@@ -128,18 +124,12 @@ class Eater implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        // удали это. у тебя теперь при регистрации она задаётся
-        // всё, удаляй следущую строчку, и приступай к росту и формуле
-//        $roles[] = 'ROLE_EATER';
-
         return array_unique($roles);
     }
 
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
-
         return $this;
     }
 
@@ -155,7 +145,6 @@ class Eater implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): self
     {
         $this->password = $password;
-
         return $this;
     }
 
@@ -186,7 +175,6 @@ class Eater implements UserInterface, PasswordAuthenticatedUserInterface
     public function setName(string $name): self
     {
         $this->name = $name;
-
         return $this;
     }
 
@@ -198,22 +186,17 @@ class Eater implements UserInterface, PasswordAuthenticatedUserInterface
     public function setSex(string $sex): self
     {
         $this->sex = $sex;
-
         return $this;
     }
 
     public function getBirthdate(): \DateTime
     {
-        // ты тут должна только вернуть: но НЕ МЕНЯТЬ ТЕКУЩИЕ ПОЛЯ
-//        return \DateTime::createFromFormat('Y-m-d', $this->birthdate);
         return $this->birthdate;
     }
 
     public function setBirthdate(\DateTime $birthdate): self
     {
-//        $this->birthdate = \DateTime::createFromFormat('Y-m-d', $this->birthdate);
         $this->birthdate = $birthdate;
-
         return $this;
     }
 
@@ -225,7 +208,6 @@ class Eater implements UserInterface, PasswordAuthenticatedUserInterface
     public function setHeight(string $height): self
     {
         $this->height = $height;
-
         return $this;
     }
 
@@ -237,7 +219,6 @@ class Eater implements UserInterface, PasswordAuthenticatedUserInterface
     public function setWeight(string $weight): self
     {
         $this->weight = $weight;
-
         return $this;
     }
 
@@ -249,7 +230,6 @@ class Eater implements UserInterface, PasswordAuthenticatedUserInterface
     public function setKcalDayNorm(string $daily): self
     {
         $this->kcalDayNorm = $daily;
-
         return $this;
     }
 }

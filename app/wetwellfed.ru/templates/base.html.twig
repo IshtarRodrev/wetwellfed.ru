@@ -32,7 +32,7 @@
                 }
                 body{
                     margin: 0;
-                    background-image:
+                    /*background-image:*/
                             /*linear-gradient(45deg, #f1abab 25%, transparent 25%,*/
                             /*transparent 75%, #f1abab 75%, #f1abab),*/
                             /*linear-gradient(45deg, #f1abab 25%, transparent 25%,*/
@@ -43,6 +43,62 @@
                     /*background:*/
                     /*        repeating-conic-gradient(#000 0% 25%, #eee 0% 50%)*/
                     /*        50%/ #{$s $s};*/
+                }
+                .nav-link-logo {
+                    text-decoration: none;
+                    color: #ff8a15 !important;
+                }
+                .nav-link-logo:hover {
+                    opacity: 0.85;
+                }
+                ul.pagination {
+                    display: flex;
+                    /*justify-content: center;*/
+                    margin: 0; /* Обнуляем значение отступов */
+                    padding: 4px;
+                    background-color: #f9efe5;
+                }
+                .pagination a {
+                    text-decoration: none;
+                }
+                .page-item-available {
+                    display: inline; /* Отображать как строчный элемент */
+                    margin-right: 5px; /* Отступ слева */
+                    border: 1px solid transparent; /* Рамка вокруг текста */
+                    text-decoration-color: orange;
+                    background-color: white;
+                    border-radius: 5px;
+                    padding: 3px 9px; /* Поля вокруг текста */
+                }
+                .page-item-active {
+                    display: inline; /* Отображать как строчный элемент */
+                    margin-right: 5px; /* Отступ слева */
+                    border: 1px solid transparent; /* Рамка вокруг текста */
+                    background-color: orange;
+                    border-radius: 5px;
+                    padding: 3px 9px; /* Поля вокруг текста */
+                }
+                .page-item-disabled {
+                    display: none;
+                }
+                #menu-list label {
+                    display: inline-block;
+                    margin-right: 25px;
+                }
+                #menu-list a {
+                    text-decoration: none;
+                    font-size: 18px;
+                    color: #a56626;
+                }
+                #menu-list a:hover {
+                    text-decoration: underline;
+                }
+
+                #menu-list img {
+                    max-width: 25px;
+                    max-height: 25px;
+                    float: left;
+                    margin-right: 5px;
                 }
             </style>
             {{ encore_entry_link_tags('app') }}
@@ -55,29 +111,38 @@
     <body>
         <header>
             <h1>
-                <a href="{{ url('app_login') }}">
-{#                    Your#}
-
-{#                    {% if is_granted('ROLE_SUPER_ADMIN_1') %}#}
-{#                        <a class="nav-link" href="{{ path('show_dash') }}">Dashboard</a>#}
-{#                    {% endif %}#}
-                    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                        <a class="nav-link" href="{{ path('app_login') }}">{{ app.user.name }}</a>'s
-                    {% else %}
-                        <a class="nav-link" href="{{ path('app_login') }}">Your</a>
-                    {% endif %}
-
+                <a class="nav-link-logo" href="{{ url('homepage') }}">
+                    WetWellFed
                 </a>
-                nutrition journal
             </h1>
-            <label>
-                <img src="donut_plus.jpg" width="50" height="50" align="bottom" alt="">
-                <a href="{{ url('add_meal') }}"> New meal </a>
-            </label>
-            <label>
-                <img src="telegram_icon.jpg" width="50" height="50" align="bottom" alt="">
-                <a href="{{ url('teletram_auth') }}"> Telegram bot </a>
-            </label>
+            {% if is_granted('ROLE_EATER') %}
+                <div id="menu-list">
+                    <label>
+                        <a href="{{ url('meal') }}">
+                            <img src="https://wetwellfed.ru/img/history.png" align="bottom" alt="your score">
+                            Consuming history
+                        </a>
+                    </label>
+                    <label>
+                        <a href="{{ url('add_meal') }}">
+                            <img src="https://wetwellfed.ru/img/new_meal.png" align="bottom" alt="">
+                            New meal
+                        </a>
+                    </label>
+                    <label>
+                        <a href="{{ url('food') }}">
+                            <img src="https://wetwellfed.ru/img/ur_food.png" align="bottom" alt="">
+                            My food
+                        </a>
+                    </label>
+                    <label>
+                        <a href="{{ url('teletram_auth') }}">
+                            <img src="https://wetwellfed.ru/img/tg_bot.png" align="bottom" alt="">
+                            Link Telegram
+                        </a>
+                    </label>
+                </div>
+            {% endif %}
             <div class="modal-body">
                 <ul class="nav flex-column">
                     {% if is_granted('ROLE_SUPER_ADMIN_1') %}
