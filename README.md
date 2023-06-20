@@ -27,7 +27,7 @@ WetWellFed уникальна своим подходом к планирова�
 
 WetWellFed - это программное обеспечение с открытым исходным кодом, лицензированное в соответствии с лицензией MIT. См. файл LICENSE для получения дополнительной информации.
 
-
+# wetwellfed.ru
 ## Motivation
 
 WetWellFed is a web application designed to make meal planning and grocery shopping easier. The motivation behind this project is to create a tool that simplifies the meal planning process and helps people eat healthier.
