@@ -60,8 +60,7 @@ class MealRepository extends ServiceEntityRepository
             $date = \date('Y-m-d', $time);
             $i++;
             $timeline[$date] = ['date' => $date, 'kcal' => 0];
-        }
-        while ($i < $days);
+        } while ($i < $days);
         $rows = $this->createQueryBuilder('m')
             ->select('m.eatenAt', 'm.calories')
             ->where('m.eater = :eater')
@@ -77,12 +76,11 @@ class MealRepository extends ServiceEntityRepository
         ;
 
         $day = [];
-        foreach ($rows as $row)
-        {
+        foreach ($rows as $row) {
             $date = $row["eatenAt"]->format('Y-m-d');
             $kcal = $row["calories"] ?? 0;
 
-            if (isset($timeline[$date]) && $timeline[$date]['date'] == $row["eatenAt"]->format('Y-m-d')){
+            if (isset($timeline[$date]) && $timeline[$date]['date'] == $row["eatenAt"]->format('Y-m-d')) {
                 $timeline[$date]['kcal'] += $kcal;
             }
         }
@@ -108,8 +106,7 @@ class MealRepository extends ServiceEntityRepository
 
         $lastMonth = \date('M', strtotime( "-$allDays days", time()));
 
-        for ($weeksInMonth = 0, $i = $allDays; $i >=0; $i--)
-        {
+        for ($weeksInMonth = 0, $i = $allDays; $i >=0; $i--) {
             $time = strtotime( '-'. $i .' days', time());
             $date = \date('Y-m-d', $time);
             $idxWeekday = (($todayNum - ($i % 7)) + 7) % 7;
@@ -120,7 +117,6 @@ class MealRepository extends ServiceEntityRepository
                     $months[] = $arr;
                 }
                 $lastMonth = \date('M', $time);
-
                 $weeksInMonth = 0;
             }
             if ((\date('w', $time) == 1)) {
@@ -164,8 +160,7 @@ class MealRepository extends ServiceEntityRepository
             ->getResult() // gives empty array!??
         ;
 
-        foreach ($rows as $row)
-        {
+        foreach ($rows as $row) {
             $date = $row["eatenAt"]->format('Y-m-d');
             $kcal = $row["calories"];
 
@@ -173,21 +168,21 @@ class MealRepository extends ServiceEntityRepository
             if ($day == 0)
                 $day = 7;
             $day -= 1;
-            if (isset($timeline[$day][$date]) && $timeline[$day][$date]['date'] == $row["eatenAt"]->format('Y-m-d')){
+            if (isset($timeline[$day][$date]) && $timeline[$day][$date]['date'] == $row["eatenAt"]->format('Y-m-d')) {
                 $timeline[$day][$date]['kcal'] += $kcal;
 
                 $percentage = $timeline[$day][$date]['kcal'] / $eater->getKcalDayNorm() * 100;
                 $lvl = 1;
-                if ($percentage > 70){
+                if ($percentage > 70) {
                     $lvl +=1;
                 }
-                if ($percentage > 90){
+                if ($percentage > 90) {
                     $lvl +=1;
                 }
-                if ($percentage > 110){
+                if ($percentage > 110) {
                     $lvl +=1;
                 }
-                if ($percentage > 130){
+                if ($percentage > 130) {
                     $lvl +=1;
                 }
                 $timeline[$day][$date]['lvl'] = $lvl;

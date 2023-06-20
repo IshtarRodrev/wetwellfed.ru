@@ -55,13 +55,10 @@ class Food
 
     public function __toString(): string
     {
-        if ($this->amount_type === Food::AMOUNT_TYPE_PACK)
-        {
+        if ($this->amount_type === Food::AMOUNT_TYPE_PACK) {
             return sprintf("%s (%dg pack) - %dkcal ",$this->name, $this->weight, $this->calories);
-            return $this->name . ',  ' . $this->weight . 'g ' . "pack" . ' - ' . $this->calories . 'kcal ';
-        }
-        else
-        return sprintf("%s - %dkcal/100g ",$this->name, $this->calories);
+        } else
+            return sprintf("%s - %dkcal/100g ",$this->name, $this->calories);
     }
 
     public function getId(): ?int

@@ -87,8 +87,7 @@ class TelegramController extends AbstractController
                         )),
                     );
                     $logger->debug('KCAL FOR CURRENT DAY REQUIRED. ', $messageText);
-                }
-                elseif ($eater && $data['message']['text'] == "week history") { // record reply to btn_2
+                } elseif ($eater && $data['message']['text'] == "week history") { // record reply to btn_2
                     $daily = $eater->getKcalDayNorm();
                     $result = "";
                     $day = $entityManager->getRepository(Meal::class)
@@ -122,8 +121,7 @@ class TelegramController extends AbstractController
                         )),
                     );
                     $logger->debug('LAST WEEK HISTORY REQUIRED. ', $messageText);
-                }
-                elseif ($messageText[0] === '/start') { // trying to find hashed id
+                } elseif ($messageText[0] === '/start') { // trying to find hashed id
                     // приветственное
                     $logger->debug('START COMMAND CALLED. ', $messageText);
                     if (isset($messageText[1])) { // trying to get hashed id
@@ -171,14 +169,12 @@ class TelegramController extends AbstractController
                                     'resize_keyboard' => TRUE,
                                 )),
                             );
-                        }
-                        else { // hashed id doesn't match cache. error.
+                        } else { // hashed id doesn't match cache. error.
                             $logger->debug('ALERT! INCORRECT CACHE CONTENT FOR AUTH_TOKEN: ', [$authHash]);
                             //throw $this->createAccessDeniedException();
                             exit();
                         }
-                    }
-                    elseif ($eater && $eater->getTelegram_id()) { // no hash id. trying to get current eater instance. ignore if eater already authenticated.
+                    } elseif ($eater && $eater->getTelegram_id()) { // no hash id. trying to get current eater instance. ignore if eater already authenticated.
                         $logger->debug('START COMMAND DUPLICATED ', $messageText);
                         $result = "%hello_again_$nickname%";
                         $reply = array(
@@ -202,8 +198,7 @@ class TelegramController extends AbstractController
                                 'resize_keyboard' => TRUE,
                             )),
                         );
-                    }
-                    else { // hashed id is empty. eater tg_id not found in db. error!
+                    } else { // hashed id is empty. eater tg_id not found in db. error!
                         $result = "%user_is_not_eater%";
                         $reply = array(
                             "chat_id" => $chat_id,
@@ -225,8 +220,7 @@ class TelegramController extends AbstractController
                         );
                         $logger->debug('START COMMAND CALLED. NO HASH RECEIVED! ', $messageText);
                     }
-                }
-                elseif ($eater) { // unrecognizable command
+                } elseif ($eater) { // unrecognizable command
                     $logger->debug('UNRECOGNIZABLE REQUEST WAS SENT BUY USER', [$data]);
                     $result = "%wrong_request%";
                     $reply = array(
@@ -250,8 +244,7 @@ class TelegramController extends AbstractController
                             'resize_keyboard' => TRUE,
                         )),
                     );
-                }
-                else { // unknown command. unknown user. error message!
+                } else { // unknown command. unknown user. error message!
                     $logger->debug('UNHANDLED REQUEST1 ', [$data]);
                     exit();
                 }

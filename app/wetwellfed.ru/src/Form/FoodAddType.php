@@ -80,8 +80,7 @@ class FoodAddType extends AbstractType
         $form = $context->getRoot();
         $food = $form->getData();
 
-        if ($food->getAmountType() === Food::AMOUNT_TYPE_PACK && $food->getWeight() < 1) // Gram=1 Pack=0
-        {
+        if ($food->getAmountType() === Food::AMOUNT_TYPE_PACK && $food->getWeight() < 1) { // Gram=1 Pack=0
             $context
                 ->buildViolation('Ukazhite ves pachki')
                 ->atPath('weight')

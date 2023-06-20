@@ -54,12 +54,9 @@ class EaterController extends AbstractController
             $interval = $now->diff($user->getBirthdate());
 
             $BMR = 1000;
-            if ($user->getSex() == 1)// BMR для женщин
-            {
+            if ($user->getSex() == 1) { // BMR для женщин
                 $BMR = 447.6 + (9.2 * $user->getWeight()) + (3.1 * $user->getHeight()) - (4.3 * $interval->y);
-            }
-            elseif ($user->getSex() == 0)// BMR для мужчин
-            {
+            } elseif ($user->getSex() == 0) { // BMR для мужчин
                 $BMR = 88.36 + (13.4 * $user->getWeight()) + (4.8 * $user->getHeight()) - (5.7 * $interval->y);
             }
             $user->setKcalDayNorm($BMR);
