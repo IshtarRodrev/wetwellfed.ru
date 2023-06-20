@@ -12,22 +12,17 @@ use App\Repository\MealRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\Routing\Annotation\Route;
 
 use Symfony\Component\Security\Core\Security;
 
 
 class MealController extends AbstractController
 {
-    private $twig;
-    private $entityManager;
-    private $bus;
+    private EntityManagerInterface $entityManager;
 
-    public function __construct(Environment $twig, EntityManagerInterface $entityManager, MessageBusInterface $bus)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->twig = $twig; // избавляемся от дублирования Environment $twig в методах
         $this->entityManager = $entityManager;
-        $this->bus = $bus;
     }
 
     /**
@@ -99,11 +94,6 @@ class MealController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $meal = $form->getData();
             $entityManager->flush();
-
-//            $this->addFlash(
-//                'success',
-//                'The item has been edited'
-//            );
 
             return $this->redirectToRoute('meal');
         }
