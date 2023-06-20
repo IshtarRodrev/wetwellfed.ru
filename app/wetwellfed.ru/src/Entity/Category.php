@@ -17,33 +17,33 @@ class Category
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Eater::class)
      * @ORM\JoinColumn(nullable=false)
      */
-    private $eater;
+    private Eater $eater;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="children")
      */
-    private $parent;
+    private Category $parent;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Category", mappedBy="parent")
      */
-    private $children;
+    private Collection $children;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Food", mappedBy="category")
      */
-    private $foods;
+    private Collection $foods;
 
     public function __construct()
     {

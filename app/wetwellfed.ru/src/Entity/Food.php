@@ -19,39 +19,39 @@ class Food
     * @ORM\GeneratedValue
     * @ORM\Column(type="integer")
     */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class)
      * @ORM\JoinColumn(nullable=false)
      */
-    private $category;
+    private Category $category;
 
     /**
      * @ORM\ManyToOne(targetEntity=Eater::class)
      * @ORM\JoinColumn(nullable=false)
      */
-    private $eater;
+    private Eater $eater;
 
     /**
     * @ORM\Column(type="string", length=255)
     */
-    private $name;
+    private string $name;
 
     /**
     * @ORM\Column(type="smallint", length=1)
     */
-    private $amount_type;
+    private int $amount_type;
 
     /**
     * @ORM\Column(type="integer", length=3)
     */
-    private $calories;
+    private int $calories;
 
     /**
     * @ORM\Column(type="integer")
     */
-    private $weight;
+    private int $weight;
 
     public function __toString(): string
     {

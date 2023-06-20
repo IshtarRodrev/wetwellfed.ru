@@ -25,7 +25,7 @@ class Eater implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
-    private $email;
+    private string $email;
 
     /**
      * @ORM\Column(type="integer", length=80, nullable=true)
@@ -35,43 +35,43 @@ class Eater implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="json")
      */
-    private $roles = [];
+    private array $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
-    private $password;
+    private string $password;
 
     /**
      * @ORM\Column(type="string", length=80)
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\Column(type="smallint", length=1)
      */
-    private $sex;
+    private int $sex;
 
     /**
      * @ORM\Column(type="date")
      */
-    private $birthdate;
+    private \DateTime $birthdate;
 
     /**
      * @ORM\Column(type="integer", length=3)
      */
-    private $height;
+    private int $height;
 
     /**
      * @ORM\Column(type="integer", length=3)
      */
-    private $weight;
+    private int $weight;
 
     /**
      * @ORM\Column(type="integer", length=4)
      */
-    private $kcalDayNorm;
+    private int $kcalDayNorm;
 
     public function getId(): ?int
     {

@@ -20,34 +20,34 @@ class Meal
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Food::class)
      * @ORM\JoinColumn(nullable=false)
      */
-    private $food;
+    private Food $food;
 
     /**
      * @ORM\ManyToOne(targetEntity=Eater::class)
      * @ORM\JoinColumn(nullable=false)
      */
-    private $eater;
+    private Eater $eater;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $amount;
+    private float $amount;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $eatenAt;
+    private \DateTime $eatenAt;
 
     /**
      * @ORM\Column(type="integer", length=3)
      */
-    private $calories;
+    private int $calories;
 
     public function __construct()
     {
