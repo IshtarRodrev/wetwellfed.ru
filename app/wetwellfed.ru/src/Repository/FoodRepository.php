@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repository;;
+namespace App\Repository;
 
 use App\Entity\Food;
 use Doctrine\Persistence\ManagerRegistry;
@@ -32,7 +32,6 @@ class FoodRepository extends ServiceEntityRepository
      */
     public function findByEater(Eater $eater = null, $current_page = 1)
     {
-//        return $this->findBy([], ['name' => 'ASC']); //без пагинации
         $paginator = new Paginator(
             $this->createQueryBuilder('f')
                 ->where('f.eater = :eater')

@@ -28,6 +28,7 @@ class FoodAddType extends AbstractType
             ])
             ->add('category', EntityType::class, [
                 'class' => Category::class,
+                'required' => false,
                 'placeholder' => '-- choose one --',
                 'query_builder' => function (EntityRepository $er) use ($options) {
                     return $er->createQueryBuilder('c')
@@ -40,7 +41,7 @@ class FoodAddType extends AbstractType
                 'choice_value' => 'id',
                 'label' => 'Category',
                 'attr' => ['class' => 'toggle'] // This is HTML class
-                ])
+            ])
             ->add('calories', IntegerType::class, [
                 'required' => true,
                 'label' => 'cal / 100g'

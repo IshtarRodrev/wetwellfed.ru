@@ -15,8 +15,8 @@
                 <td>{{ food.name }}</td>
                 <td>{{ food.calories }} kcal</td>
                 <td>
-                    <a href="{{ url('edit_food', {id: food.id}) }}">edit</a>
-                    <form action="{{ url('delete_food', {id: food.id}) }}" method="post">
+                    <a href="{{ path('edit_food', {id: food.id}) }}">edit</a>
+                    <form action="{{ path('delete_food', {id: food.id}) }}" method="post">
                         <input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
                         <button type="submit">remove</button>
                     </form>
@@ -59,7 +59,7 @@
     <span>
         <br><br>
         Can't find the proper item? Contribute our project by
-        <a href="{{ url('add_food') }}">adding more food</a>
+        <a href="{{ path('add_food') }}">adding more food</a>
         to the menu!
     </span>
 {% endblock %}

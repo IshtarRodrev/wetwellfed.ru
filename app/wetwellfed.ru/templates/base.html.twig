@@ -111,32 +111,32 @@
     <body>
         <header>
             <h1>
-                <a class="nav-link-logo" href="{{ url('homepage') }}">
+                <a class="nav-link-logo" href="{{ path('homepage') }}">
                     WetWellFed
                 </a>
             </h1>
             {% if is_granted('ROLE_EATER') %}
                 <div id="menu-list">
                     <label>
-                        <a href="{{ url('meal') }}">
+                        <a href="{{ path('meal') }}">
                             <img src="https://wetwellfed.ru/img/history.png" align="bottom" alt="your score">
                             Consuming history
                         </a>
                     </label>
                     <label>
-                        <a href="{{ url('add_meal') }}">
+                        <a href="{{ path('add_meal') }}">
                             <img src="https://wetwellfed.ru/img/new_meal.png" align="bottom" alt="">
                             New meal
                         </a>
                     </label>
                     <label>
-                        <a href="{{ url('food') }}">
+                        <a href="{{ path('food') }}">
                             <img src="https://wetwellfed.ru/img/ur_food.png" align="bottom" alt="">
                             My food
                         </a>
                     </label>
                     <label>
-                        <a href="{{ url('teletram_auth') }}">
+                        <a href="{{ path('teletram_auth') }}">
                             <img src="https://wetwellfed.ru/img/tg_bot.png" align="bottom" alt="">
                             Link Telegram
                         </a>

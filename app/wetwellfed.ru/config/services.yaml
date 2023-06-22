@@ -4,7 +4,9 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
-
+    router.request_context.scheme: 'https'
+    asset.request_context.secure: true
+    app.telegram_token: '%env(APP_TELEGRAM_TOKEN)%'
 services:
     # default configuration for services in *this* file
     _defaults:

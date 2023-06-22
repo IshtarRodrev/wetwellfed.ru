@@ -23,7 +23,7 @@ final class Version20230310194223 extends AbstractMigration
         $this->addSql('ALTER TABLE category DROP FOREIGN KEY FK_64C19C1BA8E87C4');
         $this->addSql('DROP INDEX IDX_64C19C1BA8E87C4 ON category');
         $this->addSql('ALTER TABLE category DROP food_id');
-        $this->addSql('ALTER TABLE food ADD category_id INT NOT NULL');
+        $this->addSql('ALTER TABLE food ADD category_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE food ADD CONSTRAINT FK_D43829F712469DE2 FOREIGN KEY (category_id) REFERENCES category (id)');
         $this->addSql('CREATE INDEX IDX_D43829F712469DE2 ON food (category_id)');
     }

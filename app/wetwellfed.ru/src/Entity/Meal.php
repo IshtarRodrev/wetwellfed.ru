@@ -24,13 +24,13 @@ class Meal
 
     /**
      * @ORM\ManyToOne(targetEntity=Food::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private Food $food;
 
     /**
      * @ORM\ManyToOne(targetEntity=Eater::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private Eater $eater;
 
@@ -42,7 +42,7 @@ class Meal
     /**
      * @ORM\Column(type="datetime")
      */
-    private \DateTime $eatenAt;
+    private \DateTimeInterface $eatenAt;
 
     /**
      * @ORM\Column(type="integer", length=3)
@@ -67,7 +67,6 @@ class Meal
     public function setFood(?Food $food): self
     {
         $this->food = $food;
-
         return $this;
     }
 
@@ -79,7 +78,6 @@ class Meal
     public function setEater(?Eater $eater): self
     {
         $this->eater = $eater;
-
         return $this;
     }
 
@@ -88,10 +86,9 @@ class Meal
         return $this->amount;
     }
 
-    public function setAmount($amount): self
+    public function setAmount(float $amount): self
     {
         $this->amount = $amount;
-
         return $this;
     }
 
@@ -107,20 +104,19 @@ class Meal
         return $this;
     }
 
-    public function getDate(): ?string
+    public function getDate(): string
     {
-        return sprintf('%s)', $this->getEatenAt());
+        return $this->getEatenAt();
     }
 
-    public function getCalories(): ?string
+    public function getCalories(): int
     {
         return $this->calories;
     }
 
-    public function setCalories(string $calories): self
+    public function setCalories(int $calories): self
     {
         $this->calories = $calories;
-
         return $this;
     }
 

@@ -96,7 +96,7 @@ class Eater implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return $this->email;
     }
 
     /**
@@ -104,15 +104,15 @@ class Eater implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return $this->email;
     }
 
-    public function getTelegram_id(): ?int
+    public function getTelegramId(): ?int
     {
         return $this->telegram_id;
     }
 
-    public function setTelegram_id(int $telegram_id): self
+    public function setTelegramId(int $telegram_id): self
     {
         $this->telegram_id = $telegram_id;
         return $this;
@@ -178,12 +178,12 @@ class Eater implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getSex(): ?string
+    public function getSex(): int
     {
         return $this->sex;
     }
 
-    public function setSex(string $sex): self
+    public function setSex(int $sex): self
     {
         $this->sex = $sex;
         return $this;
@@ -200,34 +200,34 @@ class Eater implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getHeight(): ?string
+    public function getHeight(): int
     {
         return $this->height;
     }
 
-    public function setHeight(string $height): self
+    public function setHeight(int $height): self
     {
         $this->height = $height;
         return $this;
     }
 
-    public function getWeight(): ?string
+    public function getWeight(): int
     {
         return $this->weight;
     }
 
-    public function setWeight(string $weight): self
+    public function setWeight(int $weight): self
     {
         $this->weight = $weight;
         return $this;
     }
 
-    public function getKcalDayNorm(): ?string
+    public function getKcalDayNorm(): int
     {
         return $this->kcalDayNorm;
     }
 
-    public function setKcalDayNorm(string $daily): self
+    public function setKcalDayNorm(int $daily): self
     {
         $this->kcalDayNorm = $daily;
         return $this;

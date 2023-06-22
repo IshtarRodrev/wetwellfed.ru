@@ -39,6 +39,8 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/food, roles: ROLE_EATER }
+        - { path: ^/category, roles: ROLE_EATER }
         - { path: ^/meal, roles: ROLE_EATER }
         - { path: ^/history, roles: ROLE_EATER }
         - { path: ^/telegram/auth, roles: ROLE_EATER }

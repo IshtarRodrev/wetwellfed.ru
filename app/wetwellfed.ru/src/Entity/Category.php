@@ -52,7 +52,7 @@ class Category
 
     public function __toString(): string
     {
-        return $this->name . ''; // NOTE: Для отображения вложенных категорий колдовать здесь
+        return $this->name ?? '-----'; // NOTE: Для отображения вложенных категорий колдовать здесь
     }
 
     public function getId(): ?int
@@ -121,10 +121,9 @@ class Category
         return $this->foods;
     }
 
-    public function setFoods(string $foods): self
+    public function setFoods(Collection $foods): self
     {
         $this->foods = $foods;
-
         return $this;
     }
 }

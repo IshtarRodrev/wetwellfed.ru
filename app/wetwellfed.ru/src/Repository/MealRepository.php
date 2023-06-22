@@ -61,6 +61,7 @@ class MealRepository extends ServiceEntityRepository
             $i++;
             $timeline[$date] = ['date' => $date, 'kcal' => 0];
         } while ($i < $days);
+
         $rows = $this->createQueryBuilder('m')
             ->select('m.eatenAt', 'm.calories')
             ->where('m.eater = :eater')
@@ -75,7 +76,6 @@ class MealRepository extends ServiceEntityRepository
             ->getResult() // gives empty array!??
         ;
 
-        $day = [];
         foreach ($rows as $row) {
             $date = $row["eatenAt"]->format('Y-m-d');
             $kcal = $row["calories"] ?? 0;
@@ -95,8 +95,6 @@ class MealRepository extends ServiceEntityRepository
         $todayNum -= 1;
         $needWeek = 52;
         $allDays = $needWeek * 7 + $todayNum;
-
-        $before = new \DateTime("-$allDays days");
 
         $timeline = [
             [], [], [], [], [], [], [],
@@ -221,8 +219,7 @@ class MealRepository extends ServiceEntityRepository
     {
         $todayStart = "2023-03-17 00:00:00";
         $todayFinish = "2023-03-17 23:59:59";
-        $scalarResult =
-        $this->createQueryBuilder('m')
+        $scalarResult = $this->createQueryBuilder('m')
             ->select('SUM (m.calories)')
             ->where('m.eater = :eater')
             ->setParameter('eater', $eater)
@@ -235,6 +232,6 @@ class MealRepository extends ServiceEntityRepository
             ->getSingleScalarResult()
 //            ->getSQL()
         ;
-        return $scalarResult;
+        return $scalarResult ?? 0;
     }
 }

@@ -6,6 +6,7 @@ use App\Entity\Eater;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\FoodRepository;
 
 /**
  * @ORM\Entity(repositoryClass=FoodRepository::class)
@@ -23,13 +24,13 @@ class Food
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
-    private Category $category;
+    private ?Category $category;
 
     /**
      * @ORM\ManyToOne(targetEntity=Eater::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private Eater $eater;
 
@@ -56,9 +57,10 @@ class Food
     public function __toString(): string
     {
         if ($this->amount_type === Food::AMOUNT_TYPE_PACK) {
-            return sprintf("%s (%dg pack) - %dkcal ",$this->name, $this->weight, $this->calories);
-        } else
-            return sprintf("%s - %dkcal/100g ",$this->name, $this->calories);
+            return sprintf("%s (%dg pack) - %dkcal ", $this->name, $this->weight, $this->calories);
+        } else {
+            return sprintf("%s - %dkcal/100g ", $this->name, $this->calories);
+        }
     }
 
     public function getId(): ?int
@@ -86,7 +88,6 @@ class Food
     public function setEater(?Eater $eater): self
     {
         $this->eater = $eater;
-
         return $this;
     }
 
@@ -98,11 +99,10 @@ class Food
     public function setName(string $name): self
     {
         $this->name = $name;
-
         return $this;
     }
 
-    public function getAmountType(): ?int
+    public function getAmountType(): int
     {
         return $this->amount_type;
     }
@@ -110,37 +110,35 @@ class Food
     public function setAmountType(int $amount_type): self
     {
         $this->amount_type = $amount_type;
-
         return $this;
     }
 
-    public function getCalories(): ?string
+    public function getCalories(): int
     {
         return $this->calories;
     }
 
-    public function setCalories(string $calories): self
+    public function setCalories(int $calories): self
     {
         $this->calories = $calories;
 
         return $this;
     }
 
-    public function getWeight(): ?string
+    public function getWeight(): int
     {
         return $this->weight;
     }
 
-    public function setWeight(string $weight): self
+    public function setWeight(int $weight): self
     {
         $this->weight = $weight;
-
         return $this;
     }
 
     public function getSelectList(): ?string
     {
-        $tare = $this->getAmountType()==0 ? '(' . $this->getWeight() . ' grams portion)' : '';
+        $tare = $this->getAmountType() == 0 ? '(' . $this->getWeight() . ' grams portion)' : '';
         return sprintf('%s %s', $this->getName(), $tare);
     }
 }

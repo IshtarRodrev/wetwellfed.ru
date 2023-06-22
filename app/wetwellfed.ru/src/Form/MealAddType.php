@@ -36,9 +36,9 @@ class MealAddType extends AbstractType
                 'label' => 'Количество',
                 'scale'    => 2,
                 'attr'     => [
-                    'min'  => 0,
+                    'min'  => 0.1,
                     'max'  => 9999.99,
-                    'step' => 0.1,
+                    'step' => 0.05,
                 ],
                 'required' => true,
                 'html5' => true,

@@ -13,7 +13,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Persistence\ManagerRegistry;
-
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
@@ -21,8 +21,6 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class TelegramController extends AbstractController
 {
-    private string $botToken = "6110747918:AAGlaCai9BXon-soaDAmYsRD3jAW03J1jaQ";
-
     /**
      * @Route("/webhook", name="tg_webhook")
      * @return Response
@@ -143,7 +141,7 @@ class TelegramController extends AbstractController
                             $nickname = $eater->getName();
 
                             // записать в базу тг
-                            $eater->setTelegram_id($chat_id);
+                            $eater->setTelegramId($chat_id);
                             $entityManager->flush();
                             $logger->debug('TG ID HAS BEEN RECORDED TO DATABASE');
 
@@ -174,11 +172,11 @@ class TelegramController extends AbstractController
                             //throw $this->createAccessDeniedException();
                             exit();
                         }
-                    } elseif ($eater && $eater->getTelegram_id()) { // no hash id. trying to get current eater instance. ignore if eater already authenticated.
+                    } elseif ($eater && $eater->getTelegramId()) { // no hash id. trying to get current eater instance. ignore if eater already authenticated.
                         $logger->debug('START COMMAND DUPLICATED ', $messageText);
                         $result = "%hello_again_$nickname%";
                         $reply = array(
-                            "chat_id" => $eater->getTelegram_id(), // where message goes to
+                            "chat_id" => $eater->getTelegramId(), // where message goes to
                             "text" => "Hey, $nickname, what can I do for you? 🤖 \n $result ",
                             "parse_mode" => "html",
                             'reply_markup' => json_encode(array(
@@ -224,7 +222,7 @@ class TelegramController extends AbstractController
                     $logger->debug('UNRECOGNIZABLE REQUEST WAS SENT BUY USER', [$data]);
                     $result = "%wrong_request%";
                     $reply = array(
-                        "chat_id" => $eater->getTelegram_id(), // where message goes to
+                        "chat_id" => $eater->getTelegramId(), // where message goes to
                         "text" => "Sorry, $nickname, your request is unable to recognize. Please, pick exactly what can I do for you? 🤖 \n $result ",
                         "parse_mode" => "html",
                         'reply_markup' => json_encode(array(
@@ -255,7 +253,7 @@ class TelegramController extends AbstractController
         }
 
         // set and call prepared reply
-        $ch = curl_init("https://api.telegram.org/bot" . $this->botToken . "/sendMessage?" .
+        $ch = curl_init("https://api.telegram.org/bot" . $this->getToken() . "/sendMessage?" .
             http_build_query($reply));
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $reply);
@@ -288,5 +286,10 @@ class TelegramController extends AbstractController
         }
 
         return $this->redirect('https://t.me/Nutrifier_bot?start=' . $authToken);
+    }
+
+    public function getToken(): string
+    {
+        return $this->getParameter("app.telegram_token");
     }
 }

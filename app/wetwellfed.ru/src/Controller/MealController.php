@@ -12,9 +12,8 @@ use App\Repository\MealRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Persistence\ManagerRegistry;
-
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
-
 
 class MealController extends AbstractController
 {
@@ -47,10 +46,8 @@ class MealController extends AbstractController
      * @Route("/meal/add", name="add_meal")
      * @return Response
      */
-    public function add(Security $security, Request $request, MealRepository $mealRepository, ManagerRegistry $doctrine): Response
+    public function add(Security $security, Request $request, MealRepository $mealRepository): Response
     {
-        $entityManager = $doctrine->getManager();
-
         $meal = new Meal();
         $form = $this->createForm(MealAddType::class, $meal, ['eater' => $security->getUser()]);
         $form->handleRequest($request);

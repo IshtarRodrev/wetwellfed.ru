@@ -36,8 +36,6 @@ class CategoryController extends AbstractController
      */
     public function tree(Security $security, Environment $twig, CategoryRepository $categoryRepository, int $page = 1): Response
     {
-        $eater = $security->getUser();
-
         $roots = $categoryRepository->getRootCategory($security->getUser());
 
         return new Response($twig->render('category/tree.html.twig', [
@@ -139,9 +137,9 @@ class CategoryController extends AbstractController
 
         $this->addFlash(
             'success',
-            'The item has been removed from the menu!'
+            'The category has been removed from the menu!'
         );
 
-        return $this->redirectToRoute('food');
+        return $this->redirectToRoute('category');
     }
 }
