@@ -217,8 +217,10 @@ class MealRepository extends ServiceEntityRepository
 
     public function getCalToday(Eater $eater = null)
     {
-        $todayStart = "2023-03-17 00:00:00";
-        $todayFinish = "2023-03-17 23:59:59";
+        $today = date("Y-m-d");
+        $todayStart = $today . " 00:00:00";
+        $todayFinish = $today . " 23:59:59";
+
         $scalarResult = $this->createQueryBuilder('m')
             ->select('SUM (m.calories)')
             ->where('m.eater = :eater')
@@ -232,6 +234,6 @@ class MealRepository extends ServiceEntityRepository
             ->getSingleScalarResult()
 //            ->getSQL()
         ;
-        return $scalarResult ?? 0;
+        return $scalarResult;
     }
 }

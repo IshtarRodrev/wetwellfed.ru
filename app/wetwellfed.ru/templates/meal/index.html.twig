@@ -15,8 +15,8 @@
                 <td>{{ meal.eatenAt|date('H:i') }}</td>
                 {#'Y-m-d H:i:s' / 'Y-m-d'#}
                 {#                <h4>{{ meal }}</h4>#}
-                <td>{{ meal.food }}</td>
-                <td>X {{ meal.amount }}</td>
+                <td>{{ meal.food }} x {{ meal.amount }}</td>
+                <td>{{ meal.calories }} kcal</td>
                 <td>
                     <a href="{{ path('edit_meal', {id: meal.id}) }}">edit</a>
                     <form action="{{ path('delete_meal', {id: meal.id}) }}" method="post">
@@ -33,7 +33,7 @@
                 <th scope="col">date</th>
                 <th scope="col">time</th>
                 <th scope="col">Title</th>
-                <th scope="col">Amount</th>
+                <th scope="col">Сalories</th>
                 <th scope="col">Action</th>
             </tr>
         </thead>

@@ -55,13 +55,18 @@ class TelegramController extends AbstractController
                     $daily = $eater->getKcalDayNorm();
                     $score = "";
                     $day = $entityManager->getRepository(Meal::class)
-                        ->getHistory($eater, 0);
+                        ->getHistory($eater, 1);
                     $logger->debug('TODAY SCORE ', $day);
                     foreach ($day as $today) {
                         $score .= $today['kcal'];
-                        $percentage = $score * $daily / 100;
+                        $percentage = round(($score / $daily) * 100.0, 2);
                         $result = "$score out of $daily kcal ($percentage%) \n";
+
+                        break; // нам нужен только один день.
                     }
+
+                    // иди делай планку) а чё?
+                    // мне жарко
 
                     $reply = array(
                         "chat_id" => $chat_id, // where message goes to
@@ -88,18 +93,18 @@ class TelegramController extends AbstractController
                 } elseif ($eater && $data['message']['text'] == "week history") { // record reply to btn_2
                     $daily = $eater->getKcalDayNorm();
                     $result = "";
-                    $day = $entityManager->getRepository(Meal::class)
+                    $days = $entityManager->getRepository(Meal::class)
                         ->getHistory($eater, 7);
-                    foreach ($day as $today) {
+                    foreach ($days as $today) {
                         $score = $today['kcal'];
                         $tmp = date_create($today['date']);
                         $date = date_format($tmp, 'm.d l');
-                        $percentage = $score * $daily / 100;
+                        $percentage = round(($score / $daily) * 100.0, 2);
                         $result .= "$date - $score out of $daily kcal ($percentage%) \n";
                     }
                     $reply = array(
                         "chat_id" => $chat_id,
-                        "text" => "Loading your consumption history for last 7 days, $nickname... 🤖 \n $result ",
+                        "text" => "Loading your consumption history for last 7 days, $nickname... 🤖 \n$result ",
                         "parse_mode" => "html",
                         'reply_markup' => json_encode(array(
                             'keyboard' => array(
