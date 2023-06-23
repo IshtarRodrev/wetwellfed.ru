@@ -62,11 +62,8 @@ class TelegramController extends AbstractController
                         $percentage = round(($score / $daily) * 100.0, 2);
                         $result = "$score out of $daily kcal ($percentage%) \n";
 
-                        break; // нам нужен только один день.
+                        break; // нужен только один день.
                     }
-
-                    // иди делай планку) а чё?
-                    // мне жарко
 
                     $reply = array(
                         "chat_id" => $chat_id, // where message goes to
