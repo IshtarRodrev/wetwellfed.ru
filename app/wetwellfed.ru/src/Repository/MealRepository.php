@@ -234,6 +234,6 @@ class MealRepository extends ServiceEntityRepository
             ->getSingleScalarResult()
 //            ->getSQL()
         ;
-        return $scalarResult;
+        return $scalarResult ?? 0;
     }
 }
