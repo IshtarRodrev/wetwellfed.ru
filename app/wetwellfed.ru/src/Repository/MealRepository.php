@@ -20,7 +20,7 @@ use Doctrine\ORM\ORMException;
  */
 class MealRepository extends ServiceEntityRepository
 {
-    public const PAGE_SIZE = 5;
+    public const PAGE_SIZE = 25;
 
     public function __construct(ManagerRegistry $registry)
     {

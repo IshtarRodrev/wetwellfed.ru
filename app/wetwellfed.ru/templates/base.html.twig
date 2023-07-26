@@ -61,6 +61,9 @@
                 .pagination a {
                     text-decoration: none;
                 }
+                .page-content {
+                    padding: 15px
+                }
                 .page-item-available {
                     display: inline; /* Отображать как строчный элемент */
                     margin-right: 5px; /* Отступ слева */
@@ -155,7 +158,9 @@
                 </ul>
             </div>
         </header>
-        {% block body %}
-        {% endblock %}
+        <div class="page-content">
+            {% block body %}
+            {% endblock %}
+        </div>
     </body>
 </html>

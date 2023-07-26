@@ -4,6 +4,20 @@
 {# ... #}
 
 {% block body %}
+
+    <style type="text/css">
+        .panel-helper {
+            display: inline-block;
+            border: 1px dashed #8da1aa;
+            border-radius: 10px;
+            margin-top: 15px;
+            padding: 8px 12px;
+            background-color: #e6f4fa;
+        }
+        .panel-helper label {
+            color: #5c6568;
+        }
+    </style>
     {% if error %}
         <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
@@ -25,4 +39,10 @@
     </form>
     Don't have an account?
     <a href="{{ path('app_register') }}">Sign up!</a>
+    <br>
+    <p class="panel-helper">
+        Test user:<br>
+        Email: <label>test@gmail.com</label><br>
+        Password: <label>qwerty</label>
+    </p>
 {% endblock %}

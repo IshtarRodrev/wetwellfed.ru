@@ -3,7 +3,8 @@
 {% block title %}Food list{% endblock %}
 
 {% block body %}
-    <h2> {date filter} </h2>
+    <h2>Meal list - <small><a href="{{ path('add_meal') }}">add meal</a></small></h2>
+
     <table class="table books-table table-hover table-bordered" id="books-list" rules="rows" cellpadding="5%" width="80%">
         {#        align="center" #}
         <tbody>

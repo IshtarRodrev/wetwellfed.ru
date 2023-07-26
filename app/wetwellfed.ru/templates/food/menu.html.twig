@@ -3,15 +3,13 @@
 {% block title %}Food list{% endblock %}
 
 {% block body %}
-    <h2>Food list - { categories }}</h2>
+    <h2>Food list - <small><a href="{{ path('add_food') }}">add food</a></small></h2>
     <table class="table books-table table-hover table-bordered" id="books-list" rules="rows" cellpadding="5%" width="80%">
 {#        align="center" #}
         <tbody>
         {% for food in paginator %}
             <tr align="center">
-                <td>{{ loop.index }}</td>
-                {#                <h4>{{ food }}</h4>#}
-                <td>{{ food.category }}</td>
+{#                <td>{{ food.category }}</td>#}
                 <td>{{ food.name }}</td>
                 <td>{{ food.calories }} kcal</td>
                 <td>
@@ -26,8 +24,7 @@
         </tbody>
         <thead>
             <tr>
-                <th scope="col">#</th>
-                <th scope="col">Category</th>
+{#                <th scope="col">Category</th>#}
                 <th scope="col">Title</th>
                 <th scope="col">Value per 100g</th>
                 <th scope="col">Action</th>

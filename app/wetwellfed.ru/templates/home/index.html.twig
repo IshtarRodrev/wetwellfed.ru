@@ -20,7 +20,9 @@
 
         .year_track{
             width: 100%;
+            max-width: 1200px;
             border-collapse: collapse; /* убрать отступы между ячейками, которые добавляет браузер  */
+            margin: auto;
         }
         .year_track tr,
         .year_track td {
@@ -83,7 +85,6 @@
             border-color: #806b6b;
             border-style: dashed;
             border-width: 0px;
-
         }
 
         .year_track .border-right {
@@ -119,13 +120,11 @@
                 {% endif %}
 
                 {% for day in weekday %}
-                    <label>
-                        <td class="{{ day.cssClass }}" title="{{ day.date }} | {{ day.kcal }}">
-                            <a class="lvl{{ day.lvl }} daily_kcal">
-                                {#{{ day.kcal }}#}
-                            </a>
-                        </td>
-                    </label>
+                    <td class="{{ day.cssClass }}" title="{{ day.kcal }} kcal - {{ day.date }}">
+                        <a class="lvl{{ day.lvl }} daily_kcal">
+                            {#{{ day.kcal }}#}
+                        </a>
+                    </td>
                 {% endfor %}
             </tr>
             </tbody>

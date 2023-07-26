@@ -3,12 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Meal;
+use App\Entity\Food;
 use App\Form\MealAddType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Twig\Environment;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\MealRepository;
+use App\Repository\FoodRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Persistence\ManagerRegistry;
@@ -42,11 +44,44 @@ class MealController extends AbstractController
         ]));
     }
 
+    function randomFill()
+    {
+//
+//        $eater = $security->getUser();
+//        $paginator = $foodRepository->findByEater($eater, 1);
+//        $foodList = $paginator->getQuery()->getResult();
+//
+//        for ($i = 0; $i < 300; $i++) {
+//            $idxFood = rand(0, count($foodList) - 1);
+//            $food = $foodList[$idxFood];
+//
+//            $randAmount = rand(100, 300);
+//            if ($food->getAmountType() == Food::AMOUNT_TYPE_PACK) {
+//                $randAmount = rand(0.5, 2);
+//            }
+//            $randDayAgo = rand(1, 100);
+//            $date = new \DateTime();
+//            $date = $date->modify( "-$randDayAgo day" );
+//
+//
+//            $meal = new Meal();
+//            $meal->setEater($eater);
+//            $meal->setFood($food);
+//            $meal->setAmount($randAmount);
+//            $meal->setEatenAt($date);
+//
+//            $mealRepository->add($meal);
+//
+//            $this->entityManager->persist($meal);
+//            $this->entityManager->flush();
+//        }
+    }
+
     /**
      * @Route("/meal/add", name="add_meal")
      * @return Response
      */
-    public function add(Security $security, Request $request, MealRepository $mealRepository): Response
+    public function add(Security $security, Request $request, MealRepository $mealRepository, FoodRepository $foodRepository): Response
     {
         $meal = new Meal();
         $form = $this->createForm(MealAddType::class, $meal, ['eater' => $security->getUser()]);

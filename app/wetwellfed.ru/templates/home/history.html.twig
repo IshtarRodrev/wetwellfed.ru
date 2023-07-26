@@ -3,12 +3,9 @@
 {% block title %}Bon appetit!{% endblock %}
 
 {% block body %}
-{#    {{ todayScore }}/{{ maxScore }}kcal#}
     <table class="table books-table table-hover table-bordered" id="books-list" rules="rows" cellpadding="5%" width="80%">
-
-    <tbody>
+        <tbody>
             {% for day in timeline %}
-    {#                {{ value }}#}
                 <tr align="center">
                     <td>{{ loop.index }}</td>
                     <td>{{ day.date }}</td>
